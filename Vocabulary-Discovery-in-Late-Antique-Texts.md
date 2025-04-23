@@ -1,0 +1,184 @@
+---
+title: Efficient Vocabulary Discovery in Late Antique Texts at the UNIX Command Line
+author: Andrew J. Hayes
+date: May 23, 2025
+csl: '/Users/drew/.pandoc/csl/chicago-fullnote-bibliography-short-title-subsequent.csl'
+bibliography: 'vocabulary.bib'
+suppress-bibliography: false
+mainfont: 'STIX Two Text'
+papersize: letter
+documentclass: 'tufte-handout'
+classoptions: 
+	- 12pt
+colorlinks: true
+linkcolor: teal
+urlcolor: blue
+versequotations: true
+pandoc-minted:
+	language: shell
+header-includes:
+- |
+    ```{=latex}
+    \usepackage{pgfornament}
+    \usepackage{setspace}
+    %\usepackage[default]{fontsetup}
+    \usepackage{microtype}
+    %\usepackage[osf]{Baskervaldx}
+    %\usepackage[osf]{libertine}
+    %\usepackage[osf]{XCharter}
+    %\usepackage[book]{fira}
+    \usepackage{fontspec}
+		\defaultfontfeatures{Numbers=OldStyle}
+    \setmonofont{PragmataPro Mono Liga}
+    \renewcommand{\footnote}[1]{\sidenote{#1}}}
+    %\renewcommand{\familydefault}{\sfdefault}
+    \usepackage[svgnames]{xcolor}
+    %\definecolor{codebackground}{RGB}{240, 240, 235}
+    \definecolor{codebackground}{RGB}{117, 128, 124}
+    \usepackage[output-dir=build]{minted}
+    \setminted{style=lightbulb,bgcolor=codebackground}
+    ```
+---
+
+# Introduction
+
+I present this workflow first by identifying the use cases for it and outlining the goals this presentation hopes to achieve and those it does not. A conceptual overview follows, with the aim of providing just enough background knowledge to use the workflow. I present the workflow in overview and interactively demonstrate its core steps. I conclude by highlighting the workflow's limitations and imparting further resources that will enable interested attendees to experiment with the workflow themselves.
+
+# Use Cases
+
+The workflow demonstrated here is designed to address a particular difficulty in patristic scholarship: searching ancient text(s) (whether in the original or in translation) for which no born digital search tool is available or accessible. Many collections of primary sources have such tools. The [Digital Syriac Corpus](https://syriaccorpus.org/index.html) is an example of a native digital collection with robust search tools. The [Thesaurus Linguae Graecae](https://stephanus.tlg.uci.edu) is another. Using such tools, if available, is ordinarily preferrable to the approach described in this presentation.  
+
+But what to do if no such tool exists, is pay-walled, or is inaccessible for some other reason? Many scholars maintain their own corpora of scanned pdfs for private research use. Optical character recognition (OCR) makes digital search of such texts possible. This presentation shows how to search a local directory tree of OCR'ed pdf files of primary sources in original or in translation in an efficient manner using freely available tools in the UNIX programming environment. These methods are imperfect, but nevertheless highly useful for assembling a working vocabulary list as a starting point for careful reading and research. Accompanying this presentation is a [public repository on github](==insert link==) with sample command-line recipes and instructions allowing any scholar to download and experiment with them.
+
+Note thate even when a native digital search tool is available, it is sometimes convenient and practical to employ the tools and techniques presented here. The following are four such cases:
+
+1. One wants to search a large number of pdf files from disparate corpora at once.
+2. One wants to search in multiple languages simultaneously.
+3. One wants to automate or script complex queries for reproducibility and convenience.
+4. One wants to produce a customized report of search results for use in another application.
+
+The examples in this talk involve searching  Ephrem the Syrian's corpus, mostly in the form of Edmund Beck's German translations, using scans made for personal use from purchased physical volumes. The tools and techniques are, however, applicable to any pdf containing LTR text in a Roman or Greek alphabet, or any such script supported by a terminal emulator. 
+
+# Three Core Steps (Goals and Non-Goals)
+
+These workflows are complex. It is impossible to describe all their parts fully within the scope of this presentation. Some of the parts omitted from the main discussion are identified and augmented in the Github repository with hints and suggestions for how one might best accomplish the task. Nevertheless, the main business of this talk is to discuss the three core steps in the workflow:
+
+1. Repaginate
+2. Explore
+3. Report
+
+# Background
+
+## UNIX and the Command Line
+
+UNIX is a family of operating systems descended from an operating system developed at Bell Labs in the 1970s.[@kernighan1984, p. vii.] Its original headline feature was the ability to provide robust multi-user support in a way that clearly delineated user ownership of files to prevent conflicts.[@kernighan1984, p. 1.] It eventually became a kind of standard: POSIX, the Portable Operating System Interface.[@robbins2005, pp. 1-7.] Today, MacOS and various forms of Linux and BSD are the most commonly used UNIXes. They form the backbone of the internet. Most servers run some form of UNIX. 
+
+UNIX OS's share a common structural feature: they consist of a kernel and a shell. A shell is a textual interface for users to the kernel of the OS. The shell is a command interpreter. It provides a prompt and a command language allowing the user to issue written commands to the kernel and to orchestrate the operation of many programs simultaneously. Although there are many different shells available to a user, most implement some substantial portion of the POSIX standard, which means that a user who learns one shell can usually apply that knowledge to any UNIX installation. The tools discussed in this presentation are as standard as possible and should be available for any UNIX system.
+
+On modern desktop and laptop computers with a window-based graphical user interface, the user accesses the shell through a terminal emulator program, which provides a place in which to issue commands via the shell and to receive output from those commands. Commands are issued to the shell as lines of plain text. This constitutes the Command Line Interface (CLI). We will be extracting information from pdf files and manipulating it at the command line using the tools `pdfgrep`, `grep`, `awk`, and `lualatex`.^[Other forms of \LaTeX, such as `pdflatex` and `xelatex` will serve just as well.] Some information about how to install `pdfgrep` via common package managers and `lualatex` as part of a \TeX distribution is provided in the acommpanying repository. The tools `grep` and `awk` are already included in any POSIX compliant environment. Any standard shell may be used. My examples will use `zsh`, the default in MacOS.
+
+One important feature of UNIX tools is their composability. They can be chained together into a pipeline to achieve a series of transformations producing the desired result. Textual information flows through UNIX commands like water flows through a pipe.
+
+## Key Concepts: PDF Page Labels and Regular Expressions
+
+The heart of this workflow turns on two key concepts: pdf page labels and regular expressions. Such regexes, as they are called will not receive their own tutorial here, but simple examples in the demonstration portion will illustrate how they are used. Resources for further study are available in the associated github repository. In essence, a regex is a plain text string that represents a pattern. A regex engine evaluates that string and finds all the strings in the source document that match the pattern. As originally conceived, regexes are used by a tool such as `grep` to search one or more plain text files. The tool `pdfgrep` is a free and open-source variant of `grep` that makes it possible to search a pdf file. Like `grep` the `pdfgrep` tool is given a regex and one or more source files and outputs all the matches, along with useful context for the match: for instance, the filename of the source file in which the match occurs and the pdf page label of the page on which the match occurs. 
+
+Page labels are a form of metadata in a pdf file that are displayed by most pdf viewing software, such as MacOS `Preview.app` or KDE `Okular`. They usually indicate a digital text's logical page number corresponding to its printed original. As in a printed text, cover pages, frontmatter, body, and backmatter can have distinct pagination. Thus, frontmatter might be paginated with lowercase roman numerals, while the body might have arabic numerals. As a result, a given page might, in absolute terms, be the seventh page in a pdf document, but be labeled with the number 2 because it has been preceded by a cover page and pages i-iv of frontmatter. The PDF Association describes these labels as "an optional descriptive label of a page that is commonly presented on-screen. This is in contrast to the integer page index used internally in PDF files."[@pdfassociation2025] Such labels are useful for working with a digital version in concert with its printed *Vorlage*. 
+
+Correspondence to the printed original is key to this workflow. If the labels of the scanned pdf correspond correctly to the printed original, the list of matches produced by `pdfgrep` can easily be looked up in either the digital or printed version. Moreover, PDF viewer software typically provides a keyboard shortcut to jump directly to a specified page label, a feature that is important when scanned files run to hundreds of pages and lack other forms of navigable structure.
+
+Unfortunately, a dumb scan of the printed original needs the page labels added, and most free viewers provide limited functionality, or none at all, for editing page label metadata or page order. Hence the first step in the workflow is to repaginate using \LaTeX. We turn now to the workflow.
+
+# Workflow
+
+## Pre-requisite steps
+
+We take for granted here that you already have one or more ocr'ed pdf files that meet the following requirements
+
+1. scanned at 300 dpi or better;
+2. OCR'ed using a high quality OCR engine (Abby recommended);
+3. and single page: each page of the hard-copy corresponds to a single page in the pdf.
+
+<!--
+1. OCR using a resolution of at least 300 dpi.
+2. If the original was scanned as a two page spread, cut appart the pdf into 1up pages.
+3. Optionally perform other image optimizations like deskew and black and white filtering
+-->
+
+## Repaginate
+
+We will use the accompanying file `repaginate.tex`. We start with the scanned pdf's that need repagination in the same directory as `repaginate.tex`. We then make any necessary changes to the `repaginate.tex` file. 
+
+If the original file is Beck's translation of the *Hymns on the Church* with the filename `beck_1960.pdf`, then we first examine the scan to determine the absolute page numbers of each section requiring distinct pagination:
+
+- 1-6 should be numbered i-vi
+- 7-end should be numbered 7-146
+
+In `repaginate.tex` we comment out lines 38-39 because we don't need any cover pages. Then, we change line 54 to include pages 1-6, and the filename to `sources/beck_1960.pdf`. We change line 57 to include the rest of the pages 7-end using the string `7-`. Once again we must update the filename to `sources/beck_1960.pdf`. This will compile a new pdf with the specified pages, using the specified page labels.
+
+The final compilation results from the following command:
+
+```
+lualatex repaginate.tex
+
+```
+
+The result should be a pdf file with the correct page labels.
+
+At this point the file is ready to use for searches. However, for this demonstration we are also going to establish a file naming convention that will help produce a useful report at the end. The convention is convenient, but arbitrary, and is necessary only if you want to use my `awk` script without modification. You are free to re-write it to follow some other convention. The included awk script is designed to use pdfs with filenames that begin with an abbreviation designating the collection, followed by a space, followed by any other text. For example, if one has the *Hymns on the Church*, the *Hymns on Faith*, and the *Metrical Discourses on Faith*, the filenames for each would be: `HdE <whatever else>.pdf` and `HdF <whatever else>.pdf` and `SdF <whatever else>.pdf`
+
+## Explore
+
+### Getting a list of matches
+A basic search that shows how regular expressions can be useful for capturing text with and without diacriticals.
+
+```sh
+pdfgrep -e '[Ss]ch[aä]tz' HdE\ German.pdf -H --page-number=label
+```
+
+Using the `-H` option forces the filename to be output when there is only a single text being searched.
+
+### Counting the number of matches
+
+```sh
+pdfgrep -e '[Ss]ch[aä]tz' HdE\ German.pdf -H -C
+```
+
+### Quickly eyeballing the number of matches across different texts
+
+```sh
+ pdfgrep -e '[Ss]ch[aä]tz' HdE\ German.pdf HdV\ German.pdf -c
+```
+
+The result shows that although the HdV and the HdE are comparable in line count, HdE seems to use the language of treasure more frequently.
+
+### Dealing with lower quality OCR and spelling variation
+
+```sh
+ pdfgrep *.pdf -e 'G[aei]hen(n)?a' --page-number=label -H
+```
+
+### Lookbehinds and pipelines when dealing with many false positives
+
+```sh
+pdfgrep  -P '(?<![Zz]u )Ende(?! des [a-z])' --page-number=label -H -C 3 --color=always *.pdf | grep -v -e '[Zz]u'
+```
+In this example, we find instances of the word Ende but which are not preceded by the word Zu, because the phrase "Zu Ende" is very common in these translations. It corresponds to *šlem*.
+
+## Report
+
+3. repaginate. See https://pdfa.org/glossary-of-pdf-terms/#integer-page-index
+	4. For books with distinct pagination of front matter and body text. There are two options. In this case I've found a graphical tool really is the most efficient. Otherwise edit internal structure using qpdf and a plain text editor. 
+	5. For articles and chapters with cover page(s) and pagination beginning in the midst of a larger sequence. The best option in this case is to use latex. There are several options here:
+		1. Use a graphical tool, such as PDFExpert, Adobe Reader or MacOS Preview. If using MacOS Preview, know that the it must be set to use "logical page numbers." Tested tools include: Acrobat Reader, Okular, Sumatra, Skim. Skim, Sumatra, and Acrobat Reader cannot do it
+	4. recombine (most tools I've found don't do this without messing with the page labels.)
+2. Basic, exploratory searches
+3. Once you've found things of interest, combine searches into a single script, expand searches to more files, and script the results into a report.
+
+# Notes 
+
+Pdf page labels should be distinguished from any page numbering printed on the document header or footer. See 
+![Screenshot 2025-04-16 at 12.38.19 PM.png](file:///Users/drew/Desktop/Screenshot%202025-04-16%20at%2012.38.19%E2%80%AFPM.png)
+
+Source: https://helpx.adobe.com/acrobat/using/manipulating-deleting-renumbering-pdf-pages.html?x-product=Helpx%2F1.0.0&x-product-location=Search%3AForums%3Alink%2F3.6.7
+accessed 2025-04-16

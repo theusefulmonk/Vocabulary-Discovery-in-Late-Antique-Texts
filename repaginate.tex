@@ -1,0 +1,61 @@
+\documentclass[letterpaper]{article}
+
+%%%%CREDITS%%%%%
+%% https://askubuntu.com/questions/32048/renumber-pages-of-a-pdf
+%% https://tex.stackexchange.com/questions/117960/header-and-page-numbers-with-pdfpages
+%%%%%%%%%%%%%%%%
+
+%% Notes begin with a double comment character: %%. Unused macros and commands, however, begin with a single comment character: %
+
+\usepackage[letterpaper]{geometry} %% Change paper format for easier reading on a small device, such as an iPhone. a5paper fits well on an iPad mini.
+
+\usepackage{pdfpages} %% This package includes pages from your scanned source (or from any pdf file you choose).
+
+%% The key is to use hyperref with the pdfpagelabels option. hypperref uses \thepage macro to set the actual pdf label in the document's metadata.
+\usepackage[pdfpagelabels]{hyperref} %% Must be loaded last or as late as possible because it redefines other commands.
+
+
+\begin{document}
+
+%% The pattern below is simple. For each section of the final 
+%% document needing distinct pagination, first redefine the \thepage 
+%% macro, then include the relevant sections of the source pdf. Repeat 
+%% as many times as necessary. Optionally, if your text includes only 
+%% part of the original, such as a compilation of book chapters, you 
+%% can reset the counter at any of these stages so that it starts at 
+%% whatever arbitrary number you want. In this way, it is possible to 
+%% start numbering, for example, at p. 345 after including a cover 
+%% page with notes or bibliographic information.
+ 
+%% Any commands not needed for a particular repagination task can be 
+%% "commented out:" that is, made inoperable by prefixing the text with a % 
+%% character. 
+
+%% The order in which these commands are applied matters. Rearrange sections 
+%% by copying and pasting as needed to produce the desired result.
+
+%% For one or more coverpages. Comment out if unneeded.
+\renewcommand*{\thepage}{Cover-\arabic{page}}
+\includepdf[pages=1]{jacques-split.pdf} %% Filename must be without spaces.
+
+%% You can also add your own titlepage as a cover if you like. In that case, 
+%% comment out the \includepdf instruction and add instead the following:
+%\begin{titlepage}
+%\title{La Théologie de Jacques de Saroug}
+%\maketitle
+%\begin{center}
+%% Put bibliographic information, or anything you want, here.
+%\end{center}
+%\end{titlepage}
+
+%% For frontmatter with lowercase roman numerals. Comment out if not needed 
+%% (such as is usually the case for journal articles).
+\renewcommand*{\thepage}{\roman{page}} %% Use \Roman for upper case Roman numerals.
+\includepdf[pages=2-47]{jacques-split.pdf} %% Filename must be without spaces.
+%% for body with regular arabic numerals
+\renewcommand*{\thepage}{\arabic{page}}
+\setcounter{page}{1} %% Set the counter to whatever arbitrary value
+%% you want. For a book, it's usually 1
+\includepdf[pages=48-]{jacques-split.pdf} %% Filename must be without spaces.
+
+\end{document}

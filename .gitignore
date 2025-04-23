@@ -1,0 +1,8 @@
+*.pdf
+*.aux
+*.log
+.DS_Store
+*.pygtex
+*.pygstyle
+/build
+/sources
