@@ -20,9 +20,12 @@ header-includes:
     ```{=latex}
     \usepackage[svgnames]{xcolor}
     %\definecolor{codebackground}{RGB}{240, 240, 235}
-    \definecolor{codebackground}{RGB}{117, 128, 124}
+    %\definecolor{codebackground}{RGB}{117, 128, 124}
+    \definecolor{bg}{HTML}{282828} % from https://github.com/kevinsawicki/monokai
     \usepackage[outputdir=build]{minted}
-    \setminted{style=lightbulb,bgcolor=codebackground}
+    \setminted{style=monokai,bgcolor=bg}
+    \definecolor{Text}{HTML}{F8F8F2}
+		\AtBeginEnvironment{minted}{\color{Text}}
     \usepackage{pgfornament}
     \usepackage{setspace}
     \usepackage{microtype}
@@ -127,7 +130,7 @@ At this point the file is ready to use for searches. However, for this demonstra
 
 This basic search that shows how regular expressions can be useful for capturing text with and without diacriticals, and for capturing compounds:
 
-```sh
+```bash
 pdfgrep -e '[Ss]ch[aä]tz' HdE\ German.pdf -H --page-number=label
 ```
 
@@ -135,7 +138,7 @@ Using the `-H` option forces the filename to be output when there is only a sing
 
 **Counting the number of matches**
 
-```sh
+```bash
 pdfgrep -e '[Ss]ch[aä]tz' HdE\ German.pdf -H -C
 ```
 
@@ -152,6 +155,14 @@ The result shows that although the HdV and the HdE are comparable in line count,
 ```sh
  pdfgrep *.pdf -e 'G[aei]hen(n)?a' --page-number=label -H
 ```
+
+**Searching in multiple languages simultaneously**
+
+```bash
+pdfgrep -i -e '([Kk]ingdom)|(Königtum)|([Rr]eich)' --page-number=label -H *.pdf
+```
+
+The pipe character in a regular expression serves as a logical `OR`.
 
 **Lookbehinds and pipelines when dealing with many false positives**
 

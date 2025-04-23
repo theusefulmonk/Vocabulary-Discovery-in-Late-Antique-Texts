@@ -90,9 +90,12 @@
 \newcommand{\CSLIndent}[1]{\hspace{\cslhangindent}#1}
 \usepackage[svgnames]{xcolor}
 %\definecolor{codebackground}{RGB}{240, 240, 235}
-\definecolor{codebackground}{RGB}{117, 128, 124}
+%\definecolor{codebackground}{RGB}{117, 128, 124}
+\definecolor{bg}{HTML}{282828} % from https://github.com/kevinsawicki/monokai
 \usepackage[outputdir=build]{minted}
-\setminted{style=lightbulb,bgcolor=codebackground}
+\setminted{style=monokai,bgcolor=bg}
+\definecolor{Text}{HTML}{F8F8F2}
+    \AtBeginEnvironment{minted}{\color{Text}}
 \usepackage{pgfornament}
 \usepackage{setspace}
 \usepackage{microtype}
@@ -398,7 +401,7 @@ This basic search that shows how regular expressions can be useful for
 capturing text with and without diacriticals, and for capturing
 compounds:
 
-\begin{minted}[]{sh}
+\begin{minted}[]{bash}
 pdfgrep -e '[Ss]ch[aä]tz' HdE\ German.pdf -H --page-number=label
 \end{minted}
 
@@ -407,7 +410,7 @@ output when there is only a single text being searched.
 
 \textbf{Counting the number of matches}
 
-\begin{minted}[]{sh}
+\begin{minted}[]{bash}
 pdfgrep -e '[Ss]ch[aä]tz' HdE\ German.pdf -H -C
 \end{minted}
 
@@ -425,6 +428,15 @@ line count, HdE seems to use the language of treasure more frequently.
 \begin{minted}[]{sh}
  pdfgrep *.pdf -e 'G[aei]hen(n)?a' --page-number=label -H
 \end{minted}
+
+\textbf{Searching in multiple languages simultaneously}
+
+\begin{minted}[]{bash}
+pdfgrep -i -e '([Kk]ingdom)|(Königtum)|([Rr]eich)' --page-number=label -H *.pdf
+\end{minted}
+
+The pipe character in a regular expression serves as a logical
+\mintinline[]{shell}{OR}.
 
 \textbf{Lookbehinds and pipelines when dealing with many false
 positives}
