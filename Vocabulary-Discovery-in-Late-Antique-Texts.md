@@ -14,17 +14,21 @@ linkcolor: teal
 urlcolor: blue
 versequotations: true
 pandoc-minted:
-	language: shell
+	language: bash
 header-includes:
 - |
     ```{=latex}
     \usepackage[svgnames]{xcolor}
     %\definecolor{codebackground}{RGB}{240, 240, 235}
     %\definecolor{codebackground}{RGB}{117, 128, 124}
+    \AtBeginDocument{\colorlet{defaultcolor}{.}}
     \definecolor{bg}{HTML}{282828} % from https://github.com/kevinsawicki/monokai
     \usepackage[outputdir=build]{minted}
     \setminted{style=monokai,bgcolor=bg}
+    \setmintedinline{style=monokai,bgcolor=None}
     \definecolor{Text}{HTML}{F8F8F2}
+    \AddToHook{cmd/mintinline/before}{\color{Text}}
+    %\AddToHook{cmd/mintinline/after}{}
 		\AtBeginEnvironment{minted}{\color{Text}}
     \usepackage{pgfornament}
     \usepackage{setspace}
@@ -33,10 +37,18 @@ header-includes:
 		\defaultfontfeatures{Numbers=OldStyle}
 		\setmainfont{STIX Two Text}
     \setmonofont{PragmataPro Mono Liga}
-    \renewcommand{\footnote}[1]{\sidenote{#1}}}
+    \renewcommand{\footnote}[1]{\sidenote{#1}}
     %\renewcommand{\familydefault}{\sfdefault}
     ```
 ---
+
+<!--needed fix for tufte-handout-->
+<!--see https://tex.stackexchange.com/questions/560523/tufte-compile-error-with-latex-->
+\ifdefined\soulregister
+\soulregister\MakeTextUppercase{1}
+\soulregister\MakeTextLowercase{1}
+\soulregister\newlinetospace{1}
+\fi
 
 # Introduction
 
@@ -128,7 +140,7 @@ At this point the file is ready to use for searches. However, for this demonstra
 
 **Getting a list of matches**
 
-This basic search that shows how regular expressions can be useful for capturing text with and without diacriticals, and for capturing compounds:
+This basic search shows how regular expressions can be useful for capturing text with and without diacriticals, and for capturing compounds:
 
 ```bash
 pdfgrep -e '[Ss]ch[aä]tz' HdE\ German.pdf -H --page-number=label

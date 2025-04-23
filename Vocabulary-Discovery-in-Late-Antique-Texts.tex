@@ -91,10 +91,14 @@
 \usepackage[svgnames]{xcolor}
 %\definecolor{codebackground}{RGB}{240, 240, 235}
 %\definecolor{codebackground}{RGB}{117, 128, 124}
+\AtBeginDocument{\colorlet{defaultcolor}{.}}
 \definecolor{bg}{HTML}{282828} % from https://github.com/kevinsawicki/monokai
 \usepackage[outputdir=build]{minted}
 \setminted{style=monokai,bgcolor=bg}
+\setmintedinline{style=monokai,bgcolor=None}
 \definecolor{Text}{HTML}{F8F8F2}
+\AddToHook{cmd/mintinline/before}{\color{Text}}
+%\AddToHook{cmd/mintinline/after}{}
     \AtBeginEnvironment{minted}{\color{Text}}
 \usepackage{pgfornament}
 \usepackage{setspace}
@@ -103,7 +107,7 @@
     \defaultfontfeatures{Numbers=OldStyle}
     \setmainfont{STIX Two Text}
 \setmonofont{PragmataPro Mono Liga}
-\renewcommand{\footnote}[1]{\sidenote{#1}}}
+\renewcommand{\footnote}[1]{\sidenote{#1}}
 %\renewcommand{\familydefault}{\sfdefault}
 \ifLuaTeX
   \usepackage{selnolig}  % disable illegal ligatures
@@ -128,6 +132,11 @@ Command Line}
 
 \begin{document}
 \maketitle
+
+\ifdefined\soulregister
+
+\soulregister\MakeTextUppercase{1} \soulregister\MakeTextLowercase{1}
+\soulregister\newlinetospace{1} \fi
 
 \section{Introduction}\label{introduction}
 
@@ -251,17 +260,16 @@ and to receive output from those commands. Commands are issued to the
 shell as lines of plain text. This constitutes the Command Line
 Interface (CLI). We will be extracting information from pdf files and
 manipulating it at the command line using the tools
-\mintinline[]{shell}{pdfgrep}, \mintinline[]{shell}{grep},
-\mintinline[]{shell}{awk}, and
-\mintinline[]{shell}{lualatex}.\footnote{Other forms of \LaTeX, such as
-  \mintinline[]{shell}{pdflatex} and \mintinline[]{shell}{xelatex} will
-  serve just as well.} Some information about how to install
-\mintinline[]{shell}{pdfgrep} via common package managers and
-\mintinline[]{shell}{lualatex} as part of a \TeX distribution is
-provided in the acommpanying repository. The tools
-\mintinline[]{shell}{grep} and \mintinline[]{shell}{awk} are already
+\mintinline[]{bash}{pdfgrep}, \mintinline[]{bash}{grep},
+\mintinline[]{bash}{awk}, and \mintinline[]{bash}{lualatex}.\footnote{Other
+  forms of \LaTeX, such as \mintinline[]{bash}{pdflatex} and
+  \mintinline[]{bash}{xelatex} will serve just as well.} Some
+information about how to install \mintinline[]{bash}{pdfgrep} via common
+package managers and \mintinline[]{bash}{lualatex} as part of a
+\TeX distribution is provided in the acommpanying repository. The tools
+\mintinline[]{bash}{grep} and \mintinline[]{bash}{awk} are already
 included in any POSIX compliant environment. Any standard shell may be
-used. My examples will use \mintinline[]{shell}{zsh}, the default in
+used. My examples will use \mintinline[]{bash}{zsh}, the default in
 MacOS.
 
 One important feature of UNIX tools is their composability. They can be
@@ -280,11 +288,11 @@ further study are available in the associated github repository. In
 essence, a regex is a plain text string that represents a pattern. A
 regex engine evaluates that string and finds all the strings in the
 source document that match the pattern. As originally conceived, regexes
-are used by a tool such as \mintinline[]{shell}{grep} to search one or
-more plain text files. The tool \mintinline[]{shell}{pdfgrep} is a free
-and open-source variant of \mintinline[]{shell}{grep} that makes it
-possible to search a pdf file. Like \mintinline[]{shell}{grep} the
-\mintinline[]{shell}{pdfgrep} tool is given a regex and one or more
+are used by a tool such as \mintinline[]{bash}{grep} to search one or
+more plain text files. The tool \mintinline[]{bash}{pdfgrep} is a free
+and open-source variant of \mintinline[]{bash}{grep} that makes it
+possible to search a pdf file. Like \mintinline[]{bash}{grep} the
+\mintinline[]{bash}{pdfgrep} tool is given a regex and one or more
 source files and outputs all the matches, along with useful context for
 the match: for instance, the filename of the source file in which the
 match occurs and the pdf page label of the page on which the match
@@ -292,7 +300,7 @@ occurs.
 
 Page labels are a form of metadata in a pdf file that are displayed by
 most pdf viewing software, such as MacOS
-\mintinline[]{shell}{Preview.app} or KDE \mintinline[]{shell}{Okular}.
+\mintinline[]{bash}{Preview.app} or KDE \mintinline[]{bash}{Okular}.
 They usually indicate a digital text's logical page number corresponding
 to its printed original. As in a printed text, cover pages, frontmatter,
 body, and backmatter can have distinct pagination. Thus, frontmatter
@@ -310,7 +318,7 @@ printed \emph{Vorlage}.
 
 Correspondence to the printed original is key to this workflow. If the
 labels of the scanned pdf correspond correctly to the printed original,
-the list of matches produced by \mintinline[]{shell}{pdfgrep} can easily
+the list of matches produced by \mintinline[]{bash}{pdfgrep} can easily
 be looked up in either the digital or printed version. Moreover, PDF
 viewer software typically provides a keyboard shortcut to jump directly
 to a specified page label, a feature that is important when scanned
@@ -344,13 +352,13 @@ files that meet the following requirements
 
 \subsection{Repaginate}\label{repaginate}
 
-We will use the accompanying file \mintinline[]{shell}{repaginate.tex}.
+We will use the accompanying file \mintinline[]{bash}{repaginate.tex}.
 We start with the scanned pdf's that need repagination in the same
-directory as \mintinline[]{shell}{repaginate.tex}. We then make any
-necessary changes to the \mintinline[]{shell}{repaginate.tex} file.
+directory as \mintinline[]{bash}{repaginate.tex}. We then make any
+necessary changes to the \mintinline[]{bash}{repaginate.tex} file.
 
 If the original file is Beck's translation of the \emph{Hymns on the
-Church} with the filename \mintinline[]{shell}{beck_1960.pdf}, then we
+Church} with the filename \mintinline[]{bash}{beck_1960.pdf}, then we
 first examine the scan to determine the absolute page numbers of each
 section requiring distinct pagination:
 
@@ -362,18 +370,18 @@ section requiring distinct pagination:
   7-end should be numbered 7-146
 \end{itemize}
 
-In \mintinline[]{shell}{repaginate.tex} we comment out lines 38-39
+In \mintinline[]{bash}{repaginate.tex} we comment out lines 38-39
 because we don't need any cover pages. Then, we change line 54 to
 include pages 1-6, and the filename to
-\mintinline[]{shell}{sources/beck_1960.pdf}. We change line 57 to
-include the rest of the pages 7-end using the string
-\mintinline[]{shell}{7-}. Once again we must update the filename to
-\mintinline[]{shell}{sources/beck_1960.pdf}. This will compile a new pdf
+\mintinline[]{bash}{sources/beck_1960.pdf}. We change line 57 to include
+the rest of the pages 7-end using the string \mintinline[]{bash}{7-}.
+Once again we must update the filename to
+\mintinline[]{bash}{sources/beck_1960.pdf}. This will compile a new pdf
 with the specified pages, using the specified page labels.
 
 The final compilation results from the following command:
 
-\begin{minted}[]{shell}
+\begin{minted}[]{bash}
 lualatex repaginate.tex
 \end{minted}
 
@@ -383,21 +391,21 @@ At this point the file is ready to use for searches. However, for this
 demonstration we are also going to establish a file naming convention
 that will help produce a useful report at the end. The convention is
 convenient, but arbitrary, and is necessary only if you want to use my
-\mintinline[]{shell}{awk} script without modification. You are free to
+\mintinline[]{bash}{awk} script without modification. You are free to
 re-write it to follow some other convention. The included awk script is
 designed to use pdfs with filenames that begin with an abbreviation
 designating the collection, followed by a space, followed by any other
 text. For example, if one has the \emph{Hymns on the Church}, the
 \emph{Hymns on Faith}, and the \emph{Metrical Discourses on Faith}, the
-filenames for each would be: \mintinline[]{shell}{HdE <whatever>.pdf}
-and \mintinline[]{shell}{HdF <whatever>.pdf} and
-\mintinline[]{shell}{SdF <whatever>.pdf}
+filenames for each would be: \mintinline[]{bash}{HdE <whatever>.pdf} and
+\mintinline[]{bash}{HdF <whatever>.pdf} and
+\mintinline[]{bash}{SdF <whatever>.pdf}
 
 \subsection{Explore}\label{explore}
 
 \textbf{Getting a list of matches}
 
-This basic search that shows how regular expressions can be useful for
+This basic search shows how regular expressions can be useful for
 capturing text with and without diacriticals, and for capturing
 compounds:
 
@@ -405,7 +413,7 @@ compounds:
 pdfgrep -e '[Ss]ch[aä]tz' HdE\ German.pdf -H --page-number=label
 \end{minted}
 
-Using the \mintinline[]{shell}{-H} option forces the filename to be
+Using the \mintinline[]{bash}{-H} option forces the filename to be
 output when there is only a single text being searched.
 
 \textbf{Counting the number of matches}
@@ -436,7 +444,7 @@ pdfgrep -i -e '([Kk]ingdom)|(Königtum)|([Rr]eich)' --page-number=label -H *.pdf
 \end{minted}
 
 The pipe character in a regular expression serves as a logical
-\mintinline[]{shell}{OR}.
+\mintinline[]{bash}{OR}.
 
 \textbf{Lookbehinds and pipelines when dealing with many false
 positives}
