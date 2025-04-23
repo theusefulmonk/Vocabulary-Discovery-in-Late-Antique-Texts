@@ -13,23 +13,21 @@ colorlinks: true
 linkcolor: teal
 urlcolor: blue
 versequotations: true
-pandoc-minted:
-	language: bash
 header-includes:
 - |
     ```{=latex}
-    \usepackage[svgnames]{xcolor}
+    %\usepackage[svgnames]{xcolor}
     %\definecolor{codebackground}{RGB}{240, 240, 235}
     %\definecolor{codebackground}{RGB}{117, 128, 124}
-    \AtBeginDocument{\colorlet{defaultcolor}{.}}
-    \definecolor{bg}{HTML}{282828} % from https://github.com/kevinsawicki/monokai
-    \usepackage[outputdir=build]{minted}
-    \setminted{style=monokai,bgcolor=bg}
-    \setmintedinline{style=monokai,bgcolor=None}
-    \definecolor{Text}{HTML}{F8F8F2}
-    \AddToHook{cmd/mintinline/before}{\color{Text}}
+    %\AtBeginDocument{\colorlet{defaultcolor}{.}}
+    %\definecolor{bg}{HTML}{282828} % from https://github.com/kevinsawicki/monokai
+    %\usepackage[outputdir=build]{minted}
+    %\setminted{style=monokai,bgcolor=bg}
+    %\setmintedinline{style=monokai,bgcolor=None}
+    %\definecolor{Text}{HTML}{F8F8F2}
+    %\AddToHook{cmd/mintinline/before}{\color{Text}}
     %\AddToHook{cmd/mintinline/after}{}
-		\AtBeginEnvironment{minted}{\color{Text}}
+		%\AtBeginEnvironment{minted}{\color{Text}}
     \usepackage{pgfornament}
     \usepackage{setspace}
     \usepackage{microtype}
@@ -37,7 +35,7 @@ header-includes:
 		\defaultfontfeatures{Numbers=OldStyle}
 		\setmainfont{STIX Two Text}
     \setmonofont{PragmataPro Mono Liga}
-    \renewcommand{\footnote}[1]{\sidenote{#1}}
+    %\renewcommand{\footnote}[1]{\sidenote{#1}}
     %\renewcommand{\familydefault}{\sfdefault}
     ```
 ---
@@ -85,17 +83,17 @@ UNIX is a family of operating systems descended from an operating system develop
 
 UNIX OS's share a common structural feature: they consist of a kernel and a shell. A shell is a textual interface for users to the kernel of the OS. The shell is a command interpreter. It provides a prompt and a command language allowing the user to issue written commands to the kernel and to orchestrate the operation of many programs simultaneously. Although there are many different shells available to a user, most implement some substantial portion of the POSIX standard, which means that a user who learns one shell can usually apply that knowledge to any UNIX installation. The tools discussed in this presentation are as standard as possible and should be available for any UNIX system.
 
-On modern desktop and laptop computers with a window-based graphical user interface, the user accesses the shell through a terminal emulator program, which provides a place in which to issue commands via the shell and to receive output from those commands. Commands are issued to the shell as lines of plain text. This constitutes the Command Line Interface (CLI). We will be extracting information from pdf files and manipulating it at the command line using the tools `pdfgrep`, `grep`, `awk`, and `lualatex`.^[Other forms of \LaTeX, such as `pdflatex` and `xelatex` will serve just as well.] Some information about how to install `pdfgrep` via common package managers and `lualatex` as part of a \TeX distribution is provided in the acommpanying repository. The tools `grep` and `awk` are already included in any POSIX compliant environment. Any standard shell may be used. My examples will use `zsh`, the default in MacOS.
+On modern desktop and laptop computers with a window-based graphical user interface, the user accesses the shell through a terminal emulator program, which provides a place in which to issue commands via the shell and to receive output from those commands. Commands are issued to the shell as lines of plain text. This constitutes the Command Line Interface (CLI). We will be extracting information from pdf files and manipulating it at the command line using the tools `pdfgrep`{.bash}, `grep`{.bash}, `awk`{.bash}, and `lualatex`{.bash}.^[Other forms of \LaTeX, such as `pdflatex`{.bash} and `xelatex`{.bash} will serve just as well.] Some information about how to install `pdfgrep`{.bash} via common package managers and `lualatex`{.bash} as part of a \TeX distribution is provided in the acommpanying repository. The tools `grep`{.bash} and `awk`{.bash} are already included in any POSIX compliant environment. Any standard shell may be used. My examples will use `zsh`{.bash}, the default in MacOS.
 
 One important feature of UNIX tools is their composability. They can be chained together into a pipeline to achieve a series of transformations producing the desired result. Textual information flows through UNIX commands like water flows through a pipe.
 
 ## Key Concepts: PDF Page Labels and Regular Expressions
 
-The heart of this workflow turns on two key concepts: pdf page labels and regular expressions. Such regexes, as they are called will not receive their own tutorial here, but simple examples in the demonstration portion will illustrate how they are used. Resources for further study are available in the associated github repository. In essence, a regex is a plain text string that represents a pattern. A regex engine evaluates that string and finds all the strings in the source document that match the pattern. As originally conceived, regexes are used by a tool such as `grep` to search one or more plain text files. The tool `pdfgrep` is a free and open-source variant of `grep` that makes it possible to search a pdf file. Like `grep` the `pdfgrep` tool is given a regex and one or more source files and outputs all the matches, along with useful context for the match: for instance, the filename of the source file in which the match occurs and the pdf page label of the page on which the match occurs. 
+The heart of this workflow turns on two key concepts: pdf page labels and regular expressions. Such regexes, as they are called will not receive their own tutorial here, but simple examples in the demonstration portion will illustrate how they are used. Resources for further study are available in the associated github repository. In essence, a regex is a plain text string that represents a pattern. A regex engine evaluates that string and finds all the strings in the source document that match the pattern. As originally conceived, regexes are used by a tool such as `grep`{.bash} to search one or more plain text files. The tool `pdfgrep`{.bash} is a free and open-source variant of `grep`{.bash} that makes it possible to search a pdf file. Like `grep`{.bash} the `pdfgrep`{.bash} tool is given a regex and one or more source files and outputs all the matches, along with useful context for the match: for instance, the filename of the source file in which the match occurs and the pdf page label of the page on which the match occurs. 
 
-Page labels are a form of metadata in a pdf file that are displayed by most pdf viewing software, such as MacOS `Preview.app` or KDE `Okular`. They usually indicate a digital text's logical page number corresponding to its printed original. As in a printed text, cover pages, frontmatter, body, and backmatter can have distinct pagination. Thus, frontmatter might be paginated with lowercase roman numerals, while the body might have arabic numerals. As a result, a given page might, in absolute terms, be the seventh page in a pdf document, but be labeled with the number 2 because it has been preceded by a cover page and pages i-iv of frontmatter. The PDF Association describes these labels as "an optional descriptive label of a page that is commonly presented on-screen. This is in contrast to the integer page index used internally in PDF files."[@pdfassociation2025] Such labels are useful for working with a digital version in concert with its printed *Vorlage*. 
+Page labels are a form of metadata in a pdf file that are displayed by most pdf viewing software, such as MacOS `Preview.app`{.bash} or KDE `Okular`{.bash}. They usually indicate a digital text's logical page number corresponding to its printed original. As in a printed text, cover pages, frontmatter, body, and backmatter can have distinct pagination. Thus, frontmatter might be paginated with lowercase roman numerals, while the body might have arabic numerals. As a result, a given page might, in absolute terms, be the seventh page in a pdf document, but be labeled with the number 2 because it has been preceded by a cover page and pages i-iv of frontmatter. The PDF Association describes these labels as "an optional descriptive label of a page that is commonly presented on-screen. This is in contrast to the integer page index used internally in PDF files."[@pdfassociation2025] Such labels are useful for working with a digital version in concert with its printed *Vorlage*. 
 
-Correspondence to the printed original is key to this workflow. If the labels of the scanned pdf correspond correctly to the printed original, the list of matches produced by `pdfgrep` can easily be looked up in either the digital or printed version. Moreover, PDF viewer software typically provides a keyboard shortcut to jump directly to a specified page label, a feature that is important when scanned files run to hundreds of pages and lack other forms of navigable structure.
+Correspondence to the printed original is key to this workflow. If the labels of the scanned pdf correspond correctly to the printed original, the list of matches produced by `pdfgrep`{.bash} can easily be looked up in either the digital or printed version. Moreover, PDF viewer software typically provides a keyboard shortcut to jump directly to a specified page label, a feature that is important when scanned files run to hundreds of pages and lack other forms of navigable structure.
 
 Unfortunately, a dumb scan of the printed original needs the page labels added, and most free viewers provide limited functionality, or none at all, for editing page label metadata or page order. Hence the first step in the workflow is to repaginate using \LaTeX. We turn now to the workflow.
 
@@ -117,24 +115,24 @@ We take for granted here that you already have one or more ocr'ed pdf files that
 
 ## Repaginate
 
-We will use the accompanying file `repaginate.tex`. We start with the scanned pdf's that need repagination in the same directory as `repaginate.tex`. We then make any necessary changes to the `repaginate.tex` file. 
+We will use the accompanying file `repaginate.tex`{.bash}. We start with the scanned pdf's that need repagination in the same directory as `repaginate.tex`{.bash}. We then make any necessary changes to the `repaginate.tex`{.bash} file. 
 
-If the original file is Beck's translation of the *Hymns on the Church* with the filename `beck_1960.pdf`, then we first examine the scan to determine the absolute page numbers of each section requiring distinct pagination:
+If the original file is Beck's translation of the *Hymns on the Church* with the filename `beck_1960.pdf`{.bash}, then we first examine the scan to determine the absolute page numbers of each section requiring distinct pagination:
 
 - 1-6 should be numbered i-vi
 - 7-end should be numbered 7-146
 
-In `repaginate.tex` we comment out lines 38-39 because we don't need any cover pages. Then, we change line 54 to include pages 1-6, and the filename to `sources/beck_1960.pdf`. We change line 57 to include the rest of the pages 7-end using the string `7-`. Once again we must update the filename to `sources/beck_1960.pdf`. This will compile a new pdf with the specified pages, using the specified page labels.
+In `repaginate.tex`{.bash} we comment out lines 38-39 because we don't need any cover pages. Then, we change line 54 to include pages 1-6, and the filename to `sources/beck_1960.pdf`{.bash}. We change line 57 to include the rest of the pages 7-end using the string `7-`{.bash}. Once again we must update the filename to `sources/beck_1960.pdf`{.bash}. This will compile a new pdf with the specified pages, using the specified page labels.
 
 The final compilation results from the following command:
 
-```
+```bash
 lualatex repaginate.tex
 ```
 
 The result should be a pdf file with the correct page labels.
 
-At this point the file is ready to use for searches. However, for this demonstration we are also going to establish a file naming convention that will help produce a useful report at the end. The convention is convenient, but arbitrary, and is necessary only if you want to use my `awk` script without modification. You are free to re-write it to follow some other convention. The included awk script is designed to use pdfs with filenames that begin with an abbreviation designating the collection, followed by a space, followed by any other text. For example, if one has the *Hymns on the Church*, the *Hymns on Faith*, and the *Metrical Discourses on Faith*, the filenames for each would be: `HdE <whatever>.pdf` and `HdF <whatever>.pdf` and `SdF <whatever>.pdf`
+At this point the file is ready to use for searches. However, for this demonstration we are also going to establish a file naming convention that will help produce a useful report at the end. The convention is convenient, but arbitrary, and is necessary only if you want to use my `awk` script without modification. You are free to re-write it to follow some other convention. The included awk script is designed to use pdfs with filenames that begin with an abbreviation designating the collection, followed by a space, followed by any other text. For example, if one has the *Hymns on the Church*, the *Hymns on Faith*, and the *Metrical Discourses on Faith*, the filenames for each would be: `HdE <whatever>.pdf`{.bash} and `HdF <whatever>.pdf`{.bash} and `SdF <whatever>.pdf`{.bash}.
 
 ## Explore
 
@@ -146,7 +144,7 @@ This basic search shows how regular expressions can be useful for capturing text
 pdfgrep -e '[Ss]ch[aä]tz' HdE\ German.pdf -H --page-number=label
 ```
 
-Using the `-H` option forces the filename to be output when there is only a single text being searched.
+Using the `-H`{.bash} option forces the filename to be output when there is only a single text being searched.
 
 **Counting the number of matches**
 
@@ -156,7 +154,7 @@ pdfgrep -e '[Ss]ch[aä]tz' HdE\ German.pdf -H -C
 
 **Quickly eyeballing the number of matches across different texts**
 
-```sh
+```bash
  pdfgrep -e '[Ss]ch[aä]tz' HdE\ German.pdf HdV\ German.pdf -c
 ```
 
@@ -164,7 +162,7 @@ The result shows that although the HdV and the HdE are comparable in line count,
 
 **Dealing with lower quality OCR and spelling variation**
 
-```sh
+```bash
  pdfgrep *.pdf -e 'G[aei]hen(n)?a' --page-number=label -H
 ```
 
@@ -174,11 +172,11 @@ The result shows that although the HdV and the HdE are comparable in line count,
 pdfgrep -i -e '([Kk]ingdom)|(Königtum)|([Rr]eich)' --page-number=label -H *.pdf
 ```
 
-The pipe character in a regular expression serves as a logical `OR`.
+The pipe character in a regular expression serves as a logical `OR`{.bash}.
 
 **Lookbehinds and pipelines when dealing with many false positives**
 
-```sh
+```bash
 pdfgrep  -P '(?<![Zz]u )Ende(?! des [a-z])'\
 --page-number=label -H -C 3\
 --color=always *.pdf | grep -v -e '[Zz]u'

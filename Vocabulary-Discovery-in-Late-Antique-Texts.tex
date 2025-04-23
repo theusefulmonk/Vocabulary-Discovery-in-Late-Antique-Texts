@@ -38,6 +38,46 @@
   \KOMAoptions{parskip=half}}
 \makeatother
 \usepackage{xcolor}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{255,255,255}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.75,0.01,0.01}{\textbf{\colorbox[rgb]{0.97,0.90,0.90}{#1}}}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.79,0.38,0.79}{#1}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.00,0.34,0.68}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.69,0.50,0.00}{#1}}
+\newcommand{\BuiltInTok}[1]{\textcolor[rgb]{0.39,0.29,0.61}{\textbf{#1}}}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.57,0.30,0.62}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.54,0.53,0.53}{#1}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.00,0.58,1.00}{#1}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.67,0.33,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.12,0.11,0.11}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.00,0.34,0.68}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.69,0.50,0.00}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.38,0.47,0.50}{#1}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.75,0.01,0.01}{\underline{#1}}}
+\newcommand{\ExtensionTok}[1]{\textcolor[rgb]{0.00,0.58,1.00}{\textbf{#1}}}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.69,0.50,0.00}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.39,0.29,0.61}{#1}}
+\newcommand{\ImportTok}[1]{\textcolor[rgb]{1.00,0.33,0.00}{#1}}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.69,0.50,0.00}{#1}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.12,0.11,0.11}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{\textcolor[rgb]{0.12,0.11,0.11}{#1}}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.12,0.11,0.11}{#1}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.43,0.16}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.00,0.43,0.16}{#1}}
+\newcommand{\RegionMarkerTok}[1]{\textcolor[rgb]{0.00,0.34,0.68}{\colorbox[rgb]{0.88,0.91,0.97}{#1}}}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.24,0.68,0.91}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{1.00,0.33,0.00}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.75,0.01,0.01}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.34,0.68}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.75,0.01,0.01}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.75,0.01,0.01}{#1}}
 \usepackage{graphicx}
 \makeatletter
 \def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
@@ -88,18 +128,18 @@
 \newcommand{\CSLLeftMargin}[1]{\parbox[t]{\csllabelwidth}{\strut#1\strut}}
 \newcommand{\CSLRightInline}[1]{\parbox[t]{\linewidth - \csllabelwidth}{\strut#1\strut}}
 \newcommand{\CSLIndent}[1]{\hspace{\cslhangindent}#1}
-\usepackage[svgnames]{xcolor}
+%\usepackage[svgnames]{xcolor}
 %\definecolor{codebackground}{RGB}{240, 240, 235}
 %\definecolor{codebackground}{RGB}{117, 128, 124}
-\AtBeginDocument{\colorlet{defaultcolor}{.}}
-\definecolor{bg}{HTML}{282828} % from https://github.com/kevinsawicki/monokai
-\usepackage[outputdir=build]{minted}
-\setminted{style=monokai,bgcolor=bg}
-\setmintedinline{style=monokai,bgcolor=None}
-\definecolor{Text}{HTML}{F8F8F2}
-\AddToHook{cmd/mintinline/before}{\color{Text}}
+%\AtBeginDocument{\colorlet{defaultcolor}{.}}
+%\definecolor{bg}{HTML}{282828} % from https://github.com/kevinsawicki/monokai
+%\usepackage[outputdir=build]{minted}
+%\setminted{style=monokai,bgcolor=bg}
+%\setmintedinline{style=monokai,bgcolor=None}
+%\definecolor{Text}{HTML}{F8F8F2}
+%\AddToHook{cmd/mintinline/before}{\color{Text}}
 %\AddToHook{cmd/mintinline/after}{}
-    \AtBeginEnvironment{minted}{\color{Text}}
+    %\AtBeginEnvironment{minted}{\color{Text}}
 \usepackage{pgfornament}
 \usepackage{setspace}
 \usepackage{microtype}
@@ -107,7 +147,7 @@
     \defaultfontfeatures{Numbers=OldStyle}
     \setmainfont{STIX Two Text}
 \setmonofont{PragmataPro Mono Liga}
-\renewcommand{\footnote}[1]{\sidenote{#1}}
+%\renewcommand{\footnote}[1]{\sidenote{#1}}
 %\renewcommand{\familydefault}{\sfdefault}
 \ifLuaTeX
   \usepackage{selnolig}  % disable illegal ligatures
@@ -260,16 +300,16 @@ and to receive output from those commands. Commands are issued to the
 shell as lines of plain text. This constitutes the Command Line
 Interface (CLI). We will be extracting information from pdf files and
 manipulating it at the command line using the tools
-\mintinline[]{bash}{pdfgrep}, \mintinline[]{bash}{grep},
-\mintinline[]{bash}{awk}, and \mintinline[]{bash}{lualatex}.\footnote{Other
-  forms of \LaTeX, such as \mintinline[]{bash}{pdflatex} and
-  \mintinline[]{bash}{xelatex} will serve just as well.} Some
-information about how to install \mintinline[]{bash}{pdfgrep} via common
-package managers and \mintinline[]{bash}{lualatex} as part of a
+\VERB|\ExtensionTok{pdfgrep}|, \VERB|\FunctionTok{grep}|,
+\VERB|\FunctionTok{awk}|, and \VERB|\ExtensionTok{lualatex}|.\footnote{Other
+  forms of \LaTeX, such as \VERB|\ExtensionTok{pdflatex}| and
+  \VERB|\ExtensionTok{xelatex}| will serve just as well.} Some
+information about how to install \VERB|\ExtensionTok{pdfgrep}| via
+common package managers and \VERB|\ExtensionTok{lualatex}| as part of a
 \TeX distribution is provided in the acommpanying repository. The tools
-\mintinline[]{bash}{grep} and \mintinline[]{bash}{awk} are already
+\VERB|\FunctionTok{grep}| and \VERB|\FunctionTok{awk}| are already
 included in any POSIX compliant environment. Any standard shell may be
-used. My examples will use \mintinline[]{bash}{zsh}, the default in
+used. My examples will use \VERB|\FunctionTok{zsh}|, the default in
 MacOS.
 
 One important feature of UNIX tools is their composability. They can be
@@ -288,11 +328,11 @@ further study are available in the associated github repository. In
 essence, a regex is a plain text string that represents a pattern. A
 regex engine evaluates that string and finds all the strings in the
 source document that match the pattern. As originally conceived, regexes
-are used by a tool such as \mintinline[]{bash}{grep} to search one or
-more plain text files. The tool \mintinline[]{bash}{pdfgrep} is a free
-and open-source variant of \mintinline[]{bash}{grep} that makes it
-possible to search a pdf file. Like \mintinline[]{bash}{grep} the
-\mintinline[]{bash}{pdfgrep} tool is given a regex and one or more
+are used by a tool such as \VERB|\FunctionTok{grep}| to search one or
+more plain text files. The tool \VERB|\ExtensionTok{pdfgrep}| is a free
+and open-source variant of \VERB|\FunctionTok{grep}| that makes it
+possible to search a pdf file. Like \VERB|\FunctionTok{grep}| the
+\VERB|\ExtensionTok{pdfgrep}| tool is given a regex and one or more
 source files and outputs all the matches, along with useful context for
 the match: for instance, the filename of the source file in which the
 match occurs and the pdf page label of the page on which the match
@@ -300,7 +340,7 @@ occurs.
 
 Page labels are a form of metadata in a pdf file that are displayed by
 most pdf viewing software, such as MacOS
-\mintinline[]{bash}{Preview.app} or KDE \mintinline[]{bash}{Okular}.
+\VERB|\ExtensionTok{Preview.app}| or KDE \VERB|\ExtensionTok{Okular}|.
 They usually indicate a digital text's logical page number corresponding
 to its printed original. As in a printed text, cover pages, frontmatter,
 body, and backmatter can have distinct pagination. Thus, frontmatter
@@ -318,7 +358,7 @@ printed \emph{Vorlage}.
 
 Correspondence to the printed original is key to this workflow. If the
 labels of the scanned pdf correspond correctly to the printed original,
-the list of matches produced by \mintinline[]{bash}{pdfgrep} can easily
+the list of matches produced by \VERB|\ExtensionTok{pdfgrep}| can easily
 be looked up in either the digital or printed version. Moreover, PDF
 viewer software typically provides a keyboard shortcut to jump directly
 to a specified page label, a feature that is important when scanned
@@ -352,13 +392,13 @@ files that meet the following requirements
 
 \subsection{Repaginate}\label{repaginate}
 
-We will use the accompanying file \mintinline[]{bash}{repaginate.tex}.
+We will use the accompanying file \VERB|\ExtensionTok{repaginate.tex}|.
 We start with the scanned pdf's that need repagination in the same
-directory as \mintinline[]{bash}{repaginate.tex}. We then make any
-necessary changes to the \mintinline[]{bash}{repaginate.tex} file.
+directory as \VERB|\ExtensionTok{repaginate.tex}|. We then make any
+necessary changes to the \VERB|\ExtensionTok{repaginate.tex}| file.
 
 If the original file is Beck's translation of the \emph{Hymns on the
-Church} with the filename \mintinline[]{bash}{beck_1960.pdf}, then we
+Church} with the filename \VERB|\ExtensionTok{beck\_1960.pdf}|, then we
 first examine the scan to determine the absolute page numbers of each
 section requiring distinct pagination:
 
@@ -370,20 +410,22 @@ section requiring distinct pagination:
   7-end should be numbered 7-146
 \end{itemize}
 
-In \mintinline[]{bash}{repaginate.tex} we comment out lines 38-39
+In \VERB|\ExtensionTok{repaginate.tex}| we comment out lines 38-39
 because we don't need any cover pages. Then, we change line 54 to
 include pages 1-6, and the filename to
-\mintinline[]{bash}{sources/beck_1960.pdf}. We change line 57 to include
-the rest of the pages 7-end using the string \mintinline[]{bash}{7-}.
-Once again we must update the filename to
-\mintinline[]{bash}{sources/beck_1960.pdf}. This will compile a new pdf
-with the specified pages, using the specified page labels.
+\VERB|\ExtensionTok{sources/beck\_1960.pdf}|. We change line 57 to
+include the rest of the pages 7-end using the string
+\VERB|\ExtensionTok{7{-}}|. Once again we must update the filename to
+\VERB|\ExtensionTok{sources/beck\_1960.pdf}|. This will compile a new
+pdf with the specified pages, using the specified page labels.
 
 The final compilation results from the following command:
 
-\begin{minted}[]{bash}
-lualatex repaginate.tex
-\end{minted}
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{lualatex}\NormalTok{ repaginate.tex}
+\end{Highlighting}
+\end{Shaded}
 
 The result should be a pdf file with the correct page labels.
 
@@ -391,15 +433,18 @@ At this point the file is ready to use for searches. However, for this
 demonstration we are also going to establish a file naming convention
 that will help produce a useful report at the end. The convention is
 convenient, but arbitrary, and is necessary only if you want to use my
-\mintinline[]{bash}{awk} script without modification. You are free to
-re-write it to follow some other convention. The included awk script is
-designed to use pdfs with filenames that begin with an abbreviation
-designating the collection, followed by a space, followed by any other
-text. For example, if one has the \emph{Hymns on the Church}, the
-\emph{Hymns on Faith}, and the \emph{Metrical Discourses on Faith}, the
-filenames for each would be: \mintinline[]{bash}{HdE <whatever>.pdf} and
-\mintinline[]{bash}{HdF <whatever>.pdf} and
-\mintinline[]{bash}{SdF <whatever>.pdf}
+\texttt{awk} script without modification. You are free to re-write it to
+follow some other convention. The included awk script is designed to use
+pdfs with filenames that begin with an abbreviation designating the
+collection, followed by a space, followed by any other text. For
+example, if one has the \emph{Hymns on the Church}, the \emph{Hymns on
+Faith}, and the \emph{Metrical Discourses on Faith}, the filenames for
+each would be:
+\VERB|\ExtensionTok{HdE} \OperatorTok{\textless{}}\NormalTok{whatever}\OperatorTok{\textgreater{}}\NormalTok{.pdf}|
+and
+\VERB|\ExtensionTok{HdF} \OperatorTok{\textless{}}\NormalTok{whatever}\OperatorTok{\textgreater{}}\NormalTok{.pdf}|
+and
+\VERB|\ExtensionTok{SdF} \OperatorTok{\textless{}}\NormalTok{whatever}\OperatorTok{\textgreater{}}\NormalTok{.pdf}|.
 
 \subsection{Explore}\label{explore}
 
@@ -409,51 +454,63 @@ This basic search shows how regular expressions can be useful for
 capturing text with and without diacriticals, and for capturing
 compounds:
 
-\begin{minted}[]{bash}
-pdfgrep -e '[Ss]ch[aä]tz' HdE\ German.pdf -H --page-number=label
-\end{minted}
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{pdfgrep} \AttributeTok{{-}e} \StringTok{\textquotesingle{}[Ss]ch[aä]tz\textquotesingle{}}\NormalTok{ HdE}\DataTypeTok{\textbackslash{} }\NormalTok{German.pdf }\AttributeTok{{-}H} \AttributeTok{{-}{-}page{-}number}\OperatorTok{=}\NormalTok{label}
+\end{Highlighting}
+\end{Shaded}
 
-Using the \mintinline[]{bash}{-H} option forces the filename to be
+Using the \VERB|\ExtensionTok{{-}H}| option forces the filename to be
 output when there is only a single text being searched.
 
 \textbf{Counting the number of matches}
 
-\begin{minted}[]{bash}
-pdfgrep -e '[Ss]ch[aä]tz' HdE\ German.pdf -H -C
-\end{minted}
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{pdfgrep} \AttributeTok{{-}e} \StringTok{\textquotesingle{}[Ss]ch[aä]tz\textquotesingle{}}\NormalTok{ HdE}\DataTypeTok{\textbackslash{} }\NormalTok{German.pdf }\AttributeTok{{-}H} \AttributeTok{{-}C}
+\end{Highlighting}
+\end{Shaded}
 
 \textbf{Quickly eyeballing the number of matches across different texts}
 
-\begin{minted}[]{sh}
- pdfgrep -e '[Ss]ch[aä]tz' HdE\ German.pdf HdV\ German.pdf -c
-\end{minted}
+\begin{Shaded}
+\begin{Highlighting}[]
+ \ExtensionTok{pdfgrep} \AttributeTok{{-}e} \StringTok{\textquotesingle{}[Ss]ch[aä]tz\textquotesingle{}}\NormalTok{ HdE}\DataTypeTok{\textbackslash{} }\NormalTok{German.pdf HdV}\DataTypeTok{\textbackslash{} }\NormalTok{German.pdf }\AttributeTok{{-}c}
+\end{Highlighting}
+\end{Shaded}
 
 The result shows that although the HdV and the HdE are comparable in
 line count, HdE seems to use the language of treasure more frequently.
 
 \textbf{Dealing with lower quality OCR and spelling variation}
 
-\begin{minted}[]{sh}
- pdfgrep *.pdf -e 'G[aei]hen(n)?a' --page-number=label -H
-\end{minted}
+\begin{Shaded}
+\begin{Highlighting}[]
+ \ExtensionTok{pdfgrep} \PreprocessorTok{*}\NormalTok{.pdf }\AttributeTok{{-}e} \StringTok{\textquotesingle{}G[aei]hen(n)?a\textquotesingle{}} \AttributeTok{{-}{-}page{-}number}\OperatorTok{=}\NormalTok{label }\AttributeTok{{-}H}
+\end{Highlighting}
+\end{Shaded}
 
 \textbf{Searching in multiple languages simultaneously}
 
-\begin{minted}[]{bash}
-pdfgrep -i -e '([Kk]ingdom)|(Königtum)|([Rr]eich)' --page-number=label -H *.pdf
-\end{minted}
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{pdfgrep} \AttributeTok{{-}i} \AttributeTok{{-}e} \StringTok{\textquotesingle{}([Kk]ingdom)|(Königtum)|([Rr]eich)\textquotesingle{}} \AttributeTok{{-}{-}page{-}number}\OperatorTok{=}\NormalTok{label }\AttributeTok{{-}H} \PreprocessorTok{*}\NormalTok{.pdf}
+\end{Highlighting}
+\end{Shaded}
 
 The pipe character in a regular expression serves as a logical
-\mintinline[]{bash}{OR}.
+\VERB|\ExtensionTok{OR}|.
 
 \textbf{Lookbehinds and pipelines when dealing with many false
 positives}
 
-\begin{minted}[]{sh}
-pdfgrep  -P '(?<![Zz]u )Ende(?! des [a-z])'\
---page-number=label -H -C 3\
---color=always *.pdf | grep -v -e '[Zz]u'
-\end{minted}
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{pdfgrep}  \AttributeTok{{-}P} \StringTok{\textquotesingle{}(?\textless{}![Zz]u )Ende(?! des [a{-}z])\textquotesingle{}}\DataTypeTok{\textbackslash{}}
+\NormalTok{{-}{-}page{-}number=label }\AttributeTok{{-}H} \AttributeTok{{-}C}\NormalTok{ 3}\DataTypeTok{\textbackslash{}}
+\NormalTok{{-}{-}color=always }\PreprocessorTok{*}\NormalTok{.pdf }\KeywordTok{|} \FunctionTok{grep} \AttributeTok{{-}v} \AttributeTok{{-}e} \StringTok{\textquotesingle{}[Zz]u\textquotesingle{}}
+\end{Highlighting}
+\end{Shaded}
 
 In this example, we find instances of the word Ende but which are not
 preceded by the word Zu, because the phrase ``Zu Ende'' is very common
