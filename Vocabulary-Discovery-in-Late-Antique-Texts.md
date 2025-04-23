@@ -160,7 +160,7 @@ pdfgrep  -P '(?<![Zz]u )Ende(?! des [a-z])'\
 --page-number=label -H -C 3\
 --color=always *.pdf | grep -v -e '[Zz]u'
 ```
-In this example, we find instances of the word Ende but which are not preceded by the word Zu, because the phrase "Zu Ende" is very common in these translations. It corresponds to *šlem*.
+In this example, we find instances of the word Ende but which are not preceded by the word Zu, because the phrase "Zu Ende" is very common in these translations. It corresponds to *šlem*, a scribal note in the mss. common at the end of a *madrāšâ* or collection of *madrāšê*.
 
 ## Report
 
