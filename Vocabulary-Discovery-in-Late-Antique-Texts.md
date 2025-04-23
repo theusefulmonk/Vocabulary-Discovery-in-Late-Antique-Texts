@@ -152,7 +152,7 @@ Using the `-H`{.bash} option forces the filename to be output when there is only
 **Counting the number of matches**
 
 ```bash
-pdfgrep -e '[Ss]ch[aä]tz' HdE\ German.pdf -H -C
+pdfgrep -e '[Ss]ch[aä]tz' HdE\ German.pdf -H -c
 ```
 
 **Quickly eyeballing the number of matches across different texts**
@@ -169,13 +169,17 @@ The result shows that although the HdV and the HdE are comparable in line count,
  pdfgrep *.pdf -e 'G[aei]hen(n)?a' --page-number=label -H
 ```
 
+Here we search for the term "Gehenna" all the pdfs in the current directory. The expression `*.pdf`{.bash} is an example of a glob. The shell expands the star character to any string of any length, which means that our search will match all the filenames in the directory that end with the extension "pdf." The proper name Gehenna admits of more than one spelling, sometimes due to poor quality OCR. But the same feature is also useful for searching in multiple languages at once.
+
 **Searching in multiple languages simultaneously**
+
+Another way to do that appears in the following code snippet:
 
 ```bash
 pdfgrep -i -e '([Kk]ingdom)|(Königtum)|([Rr]eich)' --page-number=label -H *.pdf
 ```
 
-The pipe character in a regular expression serves as a logical `OR`{.bash}.
+The pipe character in a regular expression serves as a logical `OR`{.bash}. This permits us to search for the concept of a kingdom in multiple languages. If we had, for instance, Leloir's French translation of Ephrem's *Diatessaron* commentary, we could add that to the regex, using the pipe character.
 
 **Lookbehinds and pipelines when dealing with many false positives**
 
@@ -185,6 +189,14 @@ pdfgrep  -P '(?<![Zz]u )Ende(?! des [a-z])'
 --color=always *.pdf | grep -v -e '[Zz]u'
 ```
 In this example, we find instances of the word Ende but which are not preceded by the word Zu, because the phrase "Zu Ende" is very common in these translations. It corresponds to *šlem*, a scribal note in the mss. common at the end of a *madrāšâ* or collection of *madrāšê*.
+
+Here's a version that omits the `-C` flag. It is not useful when using the command in a pipeline to produce a report.
+
+```bash
+pdfgrep  -P '(?<![Zz]u )Ende(?! des [a-z])' 
+--page-number=label -H  
+--color=always *.pdf | grep -v -e '[Zz]u'
+```
 
 ## Report
 

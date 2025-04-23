@@ -497,6 +497,9 @@ line count, HdE seems to use the language of treasure more frequently.
 \end{Highlighting}
 \end{Shaded}
 
+Note that this also searches for a proper name (Gehenna) in multiple
+languages.
+
 \textbf{Searching in multiple languages simultaneously}
 
 \begin{Shaded}
@@ -524,6 +527,17 @@ preceded by the word Zu, because the phrase ``Zu Ende'' is very common
 in these translations. It corresponds to \emph{šlem}, a scribal note in
 the mss. common at the end of a \emph{madrāšâ} or collection of
 \emph{madrāšê}.
+
+Here's a version that omits the \texttt{-C} flag. It is not useful when
+using the command in a pipeline to produce a report.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{pdfgrep}  \AttributeTok{{-}P} \StringTok{\textquotesingle{}(?\textless{}![Zz]u )Ende(?! des [a{-}z])\textquotesingle{}} 
+\ExtensionTok{{-}{-}page{-}number=label} \AttributeTok{{-}H}  
+\ExtensionTok{{-}{-}color=always} \PreprocessorTok{*}\NormalTok{.pdf }\KeywordTok{|} \FunctionTok{grep} \AttributeTok{{-}v} \AttributeTok{{-}e} \StringTok{\textquotesingle{}[Zz]u\textquotesingle{}}
+\end{Highlighting}
+\end{Shaded}
 
 \subsection{Report}\label{report}
 
