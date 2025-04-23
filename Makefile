@@ -1,5 +1,5 @@
 paper: Vocabulary-Discovery-in-Late-Antique-Texts.tex vocabulary.bib
-	lualatex --shell-escape -interaction batchmode -output-directory=./build Vocabulary-Discovery-in-Late-Antique-Texts.tex
+	lualatex -interaction batchmode -output-directory=build --shell-escape Vocabulary-Discovery-in-Late-Antique-Texts.tex
 
 Vocabulary-Discovery-in-Late-Antique-Texts.tex: Vocabulary-Discovery-in-Late-Antique-Texts.md
 	pandoc -s Vocabulary-Discovery-in-Late-Antique-Texts.md -C -o Vocabulary-Discovery-in-Late-Antique-Texts.tex --from markdown+grid_tables --filter=pandoc-minted.py

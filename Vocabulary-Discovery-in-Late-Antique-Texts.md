@@ -5,7 +5,6 @@ date: May 23, 2025
 csl: '/Users/drew/.pandoc/csl/chicago-fullnote-bibliography-short-title-subsequent.csl'
 bibliography: 'vocabulary.bib'
 suppress-bibliography: false
-mainfont: 'STIX Two Text'
 papersize: letter
 documentclass: 'tufte-handout'
 classoptions: 
@@ -19,24 +18,20 @@ pandoc-minted:
 header-includes:
 - |
     ```{=latex}
-    \usepackage{pgfornament}
-    \usepackage{setspace}
-    %\usepackage[default]{fontsetup}
-    \usepackage{microtype}
-    %\usepackage[osf]{Baskervaldx}
-    %\usepackage[osf]{libertine}
-    %\usepackage[osf]{XCharter}
-    %\usepackage[book]{fira}
-    \usepackage{fontspec}
-		\defaultfontfeatures{Numbers=OldStyle}
-    \setmonofont{PragmataPro Mono Liga}
-    \renewcommand{\footnote}[1]{\sidenote{#1}}}
-    %\renewcommand{\familydefault}{\sfdefault}
     \usepackage[svgnames]{xcolor}
     %\definecolor{codebackground}{RGB}{240, 240, 235}
     \definecolor{codebackground}{RGB}{117, 128, 124}
-    \usepackage[output-dir=build]{minted}
+    \usepackage[outputdir=build]{minted}
     \setminted{style=lightbulb,bgcolor=codebackground}
+    \usepackage{pgfornament}
+    \usepackage{setspace}
+    \usepackage{microtype}
+    \usepackage{fontspec}
+		\defaultfontfeatures{Numbers=OldStyle}
+		\setmainfont{STIX Two Text}
+    \setmonofont{PragmataPro Mono Liga}
+    \renewcommand{\footnote}[1]{\sidenote{#1}}}
+    %\renewcommand{\familydefault}{\sfdefault}
     ```
 ---
 
@@ -120,7 +115,6 @@ The final compilation results from the following command:
 
 ```
 lualatex repaginate.tex
-
 ```
 
 The result should be a pdf file with the correct page labels.
@@ -129,8 +123,9 @@ At this point the file is ready to use for searches. However, for this demonstra
 
 ## Explore
 
-### Getting a list of matches
-A basic search that shows how regular expressions can be useful for capturing text with and without diacriticals.
+**Getting a list of matches**
+
+This basic search that shows how regular expressions can be useful for capturing text with and without diacriticals, and for capturing compounds:
 
 ```sh
 pdfgrep -e '[Ss]ch[aä]tz' HdE\ German.pdf -H --page-number=label
@@ -138,13 +133,13 @@ pdfgrep -e '[Ss]ch[aä]tz' HdE\ German.pdf -H --page-number=label
 
 Using the `-H` option forces the filename to be output when there is only a single text being searched.
 
-### Counting the number of matches
+**Counting the number of matches**
 
 ```sh
 pdfgrep -e '[Ss]ch[aä]tz' HdE\ German.pdf -H -C
 ```
 
-### Quickly eyeballing the number of matches across different texts
+**Quickly eyeballing the number of matches across different texts**
 
 ```sh
  pdfgrep -e '[Ss]ch[aä]tz' HdE\ German.pdf HdV\ German.pdf -c
@@ -152,16 +147,18 @@ pdfgrep -e '[Ss]ch[aä]tz' HdE\ German.pdf -H -C
 
 The result shows that although the HdV and the HdE are comparable in line count, HdE seems to use the language of treasure more frequently.
 
-### Dealing with lower quality OCR and spelling variation
+**Dealing with lower quality OCR and spelling variation**
 
 ```sh
  pdfgrep *.pdf -e 'G[aei]hen(n)?a' --page-number=label -H
 ```
 
-### Lookbehinds and pipelines when dealing with many false positives
+**Lookbehinds and pipelines when dealing with many false positives**
 
 ```sh
-pdfgrep  -P '(?<![Zz]u )Ende(?! des [a-z])' --page-number=label -H -C 3 --color=always *.pdf | grep -v -e '[Zz]u'
+pdfgrep  -P '(?<![Zz]u )Ende(?! des [a-z])'\
+--page-number=label -H -C 3\
+--color=always *.pdf | grep -v -e '[Zz]u'
 ```
 In this example, we find instances of the word Ende but which are not preceded by the word Zu, because the phrase "Zu Ende" is very common in these translations. It corresponds to *šlem*.
 

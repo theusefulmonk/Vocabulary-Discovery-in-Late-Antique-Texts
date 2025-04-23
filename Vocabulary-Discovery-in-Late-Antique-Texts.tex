@@ -20,7 +20,6 @@
 \usepackage{lmodern}
 \ifPDFTeX\else
   % xetex/luatex font selection
-    \setmainfont[]{STIX Two Text}
 \fi
 % Use upquote if available, for straight quotes in verbatim environments
 \IfFileExists{upquote.sty}{\usepackage{upquote}}{}
@@ -89,24 +88,20 @@
 \newcommand{\CSLLeftMargin}[1]{\parbox[t]{\csllabelwidth}{\strut#1\strut}}
 \newcommand{\CSLRightInline}[1]{\parbox[t]{\linewidth - \csllabelwidth}{\strut#1\strut}}
 \newcommand{\CSLIndent}[1]{\hspace{\cslhangindent}#1}
-\usepackage{pgfornament}
-\usepackage{setspace}
-%\usepackage[default]{fontsetup}
-\usepackage{microtype}
-%\usepackage[osf]{Baskervaldx}
-%\usepackage[osf]{libertine}
-%\usepackage[osf]{XCharter}
-%\usepackage[book]{fira}
-\usepackage{fontspec}
-    \defaultfontfeatures{Numbers=OldStyle}
-\setmonofont{PragmataPro Mono Liga}
-\renewcommand{\footnote}[1]{\sidenote{#1}}}
-%\renewcommand{\familydefault}{\sfdefault}
 \usepackage[svgnames]{xcolor}
 %\definecolor{codebackground}{RGB}{240, 240, 235}
 \definecolor{codebackground}{RGB}{117, 128, 124}
-\usepackage[output-dir=build]{minted}
+\usepackage[outputdir=build]{minted}
 \setminted{style=lightbulb,bgcolor=codebackground}
+\usepackage{pgfornament}
+\usepackage{setspace}
+\usepackage{microtype}
+\usepackage{fontspec}
+    \defaultfontfeatures{Numbers=OldStyle}
+    \setmainfont{STIX Two Text}
+\setmonofont{PragmataPro Mono Liga}
+\renewcommand{\footnote}[1]{\sidenote{#1}}}
+%\renewcommand{\familydefault}{\sfdefault}
 \ifLuaTeX
   \usepackage{selnolig}  % disable illegal ligatures
 \fi
@@ -377,7 +372,6 @@ The final compilation results from the following command:
 
 \begin{minted}[]{shell}
 lualatex repaginate.tex
-
 \end{minted}
 
 The result should be a pdf file with the correct page labels.
@@ -399,11 +393,11 @@ filenames for each would be:
 
 \subsection{Explore}\label{explore}
 
-\subsubsection{Getting a list of
-matches}\label{getting-a-list-of-matches}
+\textbf{Getting a list of matches}
 
-A basic search that shows how regular expressions can be useful for
-capturing text with and without diacriticals.
+This basic search that shows how regular expressions can be useful for
+capturing text with and without diacriticals, and for capturing
+compounds:
 
 \begin{minted}[]{sh}
 pdfgrep -e '[Ss]ch[aä]tz' HdE\ German.pdf -H --page-number=label
@@ -412,15 +406,13 @@ pdfgrep -e '[Ss]ch[aä]tz' HdE\ German.pdf -H --page-number=label
 Using the \mintinline[]{shell}{-H} option forces the filename to be
 output when there is only a single text being searched.
 
-\subsubsection{Counting the number of
-matches}\label{counting-the-number-of-matches}
+\textbf{Counting the number of matches}
 
 \begin{minted}[]{sh}
 pdfgrep -e '[Ss]ch[aä]tz' HdE\ German.pdf -H -C
 \end{minted}
 
-\subsubsection{Quickly eyeballing the number of matches across different
-texts}\label{quickly-eyeballing-the-number-of-matches-across-different-texts}
+\textbf{Quickly eyeballing the number of matches across different texts}
 
 \begin{minted}[]{sh}
  pdfgrep -e '[Ss]ch[aä]tz' HdE\ German.pdf HdV\ German.pdf -c
@@ -429,18 +421,19 @@ texts}\label{quickly-eyeballing-the-number-of-matches-across-different-texts}
 The result shows that although the HdV and the HdE are comparable in
 line count, HdE seems to use the language of treasure more frequently.
 
-\subsubsection{Dealing with lower quality OCR and spelling
-variation}\label{dealing-with-lower-quality-ocr-and-spelling-variation}
+\textbf{Dealing with lower quality OCR and spelling variation}
 
 \begin{minted}[]{sh}
  pdfgrep *.pdf -e 'G[aei]hen(n)?a' --page-number=label -H
 \end{minted}
 
-\subsubsection{Lookbehinds and pipelines when dealing with many false
-positives}\label{lookbehinds-and-pipelines-when-dealing-with-many-false-positives}
+\textbf{Lookbehinds and pipelines when dealing with many false
+positives}
 
 \begin{minted}[]{sh}
-pdfgrep  -P '(?<![Zz]u )Ende(?! des [a-z])' --page-number=label -H -C 3 --color=always *.pdf | grep -v -e '[Zz]u'
+pdfgrep  -P '(?<![Zz]u )Ende(?! des [a-z])'\
+--page-number=label -H -C 3\
+--color=always *.pdf | grep -v -e '[Zz]u'
 \end{minted}
 
 In this example, we find instances of the word Ende but which are not
