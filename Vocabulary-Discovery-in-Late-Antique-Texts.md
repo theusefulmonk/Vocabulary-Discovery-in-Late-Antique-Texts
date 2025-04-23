@@ -105,7 +105,7 @@ Unfortunately, a dumb scan of the printed original needs the page labels added, 
 We take for granted here that you already have one or more ocr'ed pdf files that meet the following requirements
 
 1. scanned at 300 dpi or better;
-2. OCR'ed using a high quality OCR engine (Abby recommended);
+2. OCR'ed using a high quality OCR engine (Abbyy recommended);
 3. and single page: each page of the hard-copy corresponds to a single page in the pdf.
 
 <!--
