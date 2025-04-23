@@ -455,7 +455,12 @@ Following the UNIX philosophy, we first compose small searches
 interactively at the command line. Once one has worked out the pieces,
 they can be put together into a single pipeline.
 
-\textbf{Getting a list of matches}
+\begin{enumerate}
+\def\labelenumi{(\arabic{enumi})}
+\tightlist
+\item
+  \textbf{Getting a list of matches from a single text}
+\end{enumerate}
 
 This basic search shows how regular expressions can be useful for
 capturing text with and without diacriticals, and for capturing
@@ -470,15 +475,31 @@ compounds:
 Using the \VERB|\ExtensionTok{{-}H}| option forces the filename to be
 output when there is only a single text being searched.
 
-\textbf{Counting the number of matches}
+\begin{enumerate}
+\def\labelenumi{(\arabic{enumi})}
+\setcounter{enumi}{1}
+\tightlist
+\item
+  \textbf{Counting the number of matches}
+\end{enumerate}
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\ExtensionTok{pdfgrep} \AttributeTok{{-}e} \StringTok{\textquotesingle{}[Ss]ch[aä]tz\textquotesingle{}}\NormalTok{ HdE}\DataTypeTok{\textbackslash{} }\NormalTok{German.pdf }\AttributeTok{{-}H} \AttributeTok{{-}C}
+\ExtensionTok{pdfgrep} \AttributeTok{{-}e} \StringTok{\textquotesingle{}[Ss]ch[aä]tz\textquotesingle{}}\NormalTok{ HdE}\DataTypeTok{\textbackslash{} }\NormalTok{German.pdf }\AttributeTok{{-}H} \AttributeTok{{-}c}
 \end{Highlighting}
 \end{Shaded}
 
-\textbf{Quickly eyeballing the number of matches across different texts}
+Character classes inside the square brackets will match any of those
+characters.
+
+\begin{enumerate}
+\def\labelenumi{(\arabic{enumi})}
+\setcounter{enumi}{2}
+\tightlist
+\item
+  \textbf{Quickly eyeballing the number of matches across different
+  texts}
+\end{enumerate}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -486,10 +507,17 @@ output when there is only a single text being searched.
 \end{Highlighting}
 \end{Shaded}
 
+The \texttt{-c} flag is used to count the number of matches, per file.
 The result shows that although the HdV and the HdE are comparable in
 line count, HdE seems to use the language of treasure more frequently.
 
-\textbf{Dealing with lower quality OCR and spelling variation}
+\begin{enumerate}
+\def\labelenumi{(\arabic{enumi})}
+\setcounter{enumi}{3}
+\tightlist
+\item
+  \textbf{Dealing with lower quality OCR and spelling variation}
+\end{enumerate}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -497,10 +525,24 @@ line count, HdE seems to use the language of treasure more frequently.
 \end{Highlighting}
 \end{Shaded}
 
-Note that this also searches for a proper name (Gehenna) in multiple
-languages.
+Here we search for the term ``Gehenna'' all the pdfs in the current
+directory. The expression \VERB|\ExtensionTok{*.pdf}| is an example of a
+glob. The shell expands the star character to any string of any length,
+which means that our search will match all the filenames in the
+directory that end with the extension ``pdf.'' The proper name Gehenna
+admits of more than one spelling, sometimes due to poor quality OCR. But
+the same feature is also useful for searching in multiple languages at
+once.
 
-\textbf{Searching in multiple languages simultaneously}
+\begin{enumerate}
+\def\labelenumi{(\arabic{enumi})}
+\setcounter{enumi}{4}
+\tightlist
+\item
+  \textbf{Searching in multiple languages simultaneously}
+\end{enumerate}
+
+Another way to do that appears in the following code snippet:
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -509,10 +551,19 @@ languages.
 \end{Shaded}
 
 The pipe character in a regular expression serves as a logical
-\VERB|\ExtensionTok{OR}|.
+\VERB|\ExtensionTok{OR}|. This permits us to search for the concept of a
+kingdom in multiple languages. If we had, for instance, Leloir's French
+translation of Ephrem's \emph{Diatessaron} commentary, we could add that
+to the regex, using the pipe character.
 
-\textbf{Lookbehinds and pipelines when dealing with many false
-positives}
+\begin{enumerate}
+\def\labelenumi{(\arabic{enumi})}
+\setcounter{enumi}{5}
+\tightlist
+\item
+  \textbf{Lookbehinds and pipelines when dealing with many false
+  positives}
+\end{enumerate}
 
 \begin{Shaded}
 \begin{Highlighting}[numbers=left,,]
@@ -530,6 +581,14 @@ the mss. common at the end of a \emph{madrāšâ} or collection of
 
 Here's a version that omits the \texttt{-C} flag. It is not useful when
 using the command in a pipeline to produce a report.
+
+\begin{enumerate}
+\def\labelenumi{(\arabic{enumi})}
+\setcounter{enumi}{6}
+\tightlist
+\item
+  \textbf{Modified Version}
+\end{enumerate}
 
 \begin{Shaded}
 \begin{Highlighting}[]

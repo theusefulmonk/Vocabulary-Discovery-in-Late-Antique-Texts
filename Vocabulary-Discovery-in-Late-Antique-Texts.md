@@ -139,7 +139,7 @@ At this point the file is ready to use for searches. However, for this demonstra
 
 Following the UNIX philosophy, we first compose small searches interactively at the command line. Once one has worked out the pieces, they can be put together into a single pipeline.
 
-**Getting a list of matches**
+(@Example1) **Getting a list of matches from a single text** 
 
 This basic search shows how regular expressions can be useful for capturing text with and without diacriticals, and for capturing compounds:
 
@@ -149,21 +149,23 @@ pdfgrep -e '[Ss]ch[aä]tz' HdE\ German.pdf -H --page-number=label
 
 Using the `-H`{.bash} option forces the filename to be output when there is only a single text being searched.
 
-**Counting the number of matches**
+(@Example2) **Counting the number of matches** 
 
 ```bash
 pdfgrep -e '[Ss]ch[aä]tz' HdE\ German.pdf -H -c
 ```
 
-**Quickly eyeballing the number of matches across different texts**
+Character classes inside the square brackets will match any of those characters.
+
+(@Example3) **Quickly eyeballing the number of matches across different texts**
 
 ```bash
  pdfgrep -e '[Ss]ch[aä]tz' HdE\ German.pdf HdV\ German.pdf -c
 ```
 
-The result shows that although the HdV and the HdE are comparable in line count, HdE seems to use the language of treasure more frequently.
+The `-c` flag is used to count the number of matches, per file. The result shows that although the HdV and the HdE are comparable in line count, HdE seems to use the language of treasure more frequently. 
 
-**Dealing with lower quality OCR and spelling variation**
+(@Example4) **Dealing with lower quality OCR and spelling variation**
 
 ```bash
  pdfgrep *.pdf -e 'G[aei]hen(n)?a' --page-number=label -H
@@ -171,7 +173,7 @@ The result shows that although the HdV and the HdE are comparable in line count,
 
 Here we search for the term "Gehenna" all the pdfs in the current directory. The expression `*.pdf`{.bash} is an example of a glob. The shell expands the star character to any string of any length, which means that our search will match all the filenames in the directory that end with the extension "pdf." The proper name Gehenna admits of more than one spelling, sometimes due to poor quality OCR. But the same feature is also useful for searching in multiple languages at once.
 
-**Searching in multiple languages simultaneously**
+(@Example5) **Searching in multiple languages simultaneously**
 
 Another way to do that appears in the following code snippet:
 
@@ -181,16 +183,19 @@ pdfgrep -i -e '([Kk]ingdom)|(Königtum)|([Rr]eich)' --page-number=label -H *.pdf
 
 The pipe character in a regular expression serves as a logical `OR`{.bash}. This permits us to search for the concept of a kingdom in multiple languages. If we had, for instance, Leloir's French translation of Ephrem's *Diatessaron* commentary, we could add that to the regex, using the pipe character.
 
-**Lookbehinds and pipelines when dealing with many false positives**
+(@Example6) **Lookbehinds and pipelines when dealing with many false positives**
 
 ```bash {.numberLines}
 pdfgrep  -P '(?<![Zz]u )Ende(?! des [a-z])' 
 --page-number=label -H -C 3 
 --color=always *.pdf | grep -v -e '[Zz]u'
 ```
+
 In this example, we find instances of the word Ende but which are not preceded by the word Zu, because the phrase "Zu Ende" is very common in these translations. It corresponds to *šlem*, a scribal note in the mss. common at the end of a *madrāšâ* or collection of *madrāšê*.
 
 Here's a version that omits the `-C` flag. It is not useful when using the command in a pipeline to produce a report.
+
+(@Example7) **Modified Version**
 
 ```bash
 pdfgrep  -P '(?<![Zz]u )Ende(?! des [a-z])' 
