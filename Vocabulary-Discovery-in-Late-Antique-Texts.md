@@ -119,7 +119,7 @@ lualatex repaginate.tex
 
 The result should be a pdf file with the correct page labels.
 
-At this point the file is ready to use for searches. However, for this demonstration we are also going to establish a file naming convention that will help produce a useful report at the end. The convention is convenient, but arbitrary, and is necessary only if you want to use my `awk` script without modification. You are free to re-write it to follow some other convention. The included awk script is designed to use pdfs with filenames that begin with an abbreviation designating the collection, followed by a space, followed by any other text. For example, if one has the *Hymns on the Church*, the *Hymns on Faith*, and the *Metrical Discourses on Faith*, the filenames for each would be: `HdE <whatever else>.pdf` and `HdF <whatever else>.pdf` and `SdF <whatever else>.pdf`
+At this point the file is ready to use for searches. However, for this demonstration we are also going to establish a file naming convention that will help produce a useful report at the end. The convention is convenient, but arbitrary, and is necessary only if you want to use my `awk` script without modification. You are free to re-write it to follow some other convention. The included awk script is designed to use pdfs with filenames that begin with an abbreviation designating the collection, followed by a space, followed by any other text. For example, if one has the *Hymns on the Church*, the *Hymns on Faith*, and the *Metrical Discourses on Faith*, the filenames for each would be: `HdE <whatever>.pdf` and `HdF <whatever>.pdf` and `SdF <whatever>.pdf`
 
 ## Explore
 
