@@ -38,6 +38,10 @@
   \KOMAoptions{parskip=half}}
 \makeatother
 \usepackage{xcolor}
+\usepackage{listings}
+\newcommand{\passthrough}[1]{#1}
+\lstset{defaultdialect=[5.3]Lua}
+\lstset{defaultdialect=[x86masm]Assembler}
 \usepackage{color}
 \usepackage{fancyvrb}
 \newcommand{\VerbBar}{|}
@@ -392,13 +396,13 @@ files that meet the following requirements
 
 \subsection{Repaginate}\label{repaginate}
 
-We will use the accompanying file \VERB|\ExtensionTok{repaginate.tex}|.
-We start with the scanned pdf's that need repagination in the same
-directory as \VERB|\ExtensionTok{repaginate.tex}|. We then make any
-necessary changes to the \VERB|\ExtensionTok{repaginate.tex}| file.
+We will use the accompanying file \VERB|\NormalTok{repaginate.tex}|. We
+start with the scanned pdf's that need repagination in the same
+directory as \VERB|\NormalTok{repaginate.tex}|. We then make any
+necessary changes to the \VERB|\NormalTok{repaginate.tex}| file.
 
 If the original file is Beck's translation of the \emph{Hymns on the
-Church} with the filename \VERB|\ExtensionTok{beck\_1960.pdf}|, then we
+Church} with the filename \VERB|\NormalTok{beck\_1960.pdf}|, then we
 first examine the scan to determine the absolute page numbers of each
 section requiring distinct pagination:
 
@@ -410,14 +414,13 @@ section requiring distinct pagination:
   7-end should be numbered 7-146
 \end{itemize}
 
-In \VERB|\ExtensionTok{repaginate.tex}| we comment out lines 38-39
-because we don't need any cover pages. Then, we change line 54 to
-include pages 1-6, and the filename to
-\VERB|\ExtensionTok{sources/beck\_1960.pdf}|. We change line 57 to
-include the rest of the pages 7-end using the string
-\VERB|\ExtensionTok{7{-}}|. Once again we must update the filename to
-\VERB|\ExtensionTok{sources/beck\_1960.pdf}|. This will compile a new
-pdf with the specified pages, using the specified page labels.
+In \VERB|\NormalTok{repaginate.tex}| we comment out lines 38-39 because
+we don't need any cover pages. Then, we change line 54 to include pages
+1-6, and the filename to \VERB|\NormalTok{sources/beck\_1960.pdf}|. We
+change line 57 to include the rest of the pages 7-end using the string
+\VERB|\NormalTok{7{-}}|. Once again we must update the filename to
+\VERB|\NormalTok{sources/beck\_1960.pdf}|. This will compile a new pdf
+with the specified pages, using the specified page labels.
 
 The final compilation results from the following command:
 
@@ -433,20 +436,24 @@ At this point the file is ready to use for searches. However, for this
 demonstration we are also going to establish a file naming convention
 that will help produce a useful report at the end. The convention is
 convenient, but arbitrary, and is necessary only if you want to use my
-\texttt{awk} script without modification. You are free to re-write it to
-follow some other convention. The included awk script is designed to use
-pdfs with filenames that begin with an abbreviation designating the
-collection, followed by a space, followed by any other text. For
-example, if one has the \emph{Hymns on the Church}, the \emph{Hymns on
-Faith}, and the \emph{Metrical Discourses on Faith}, the filenames for
-each would be:
-\VERB|\ExtensionTok{HdE} \OperatorTok{\textless{}}\NormalTok{whatever}\OperatorTok{\textgreater{}}\NormalTok{.pdf}|
+\VERB|\FunctionTok{awk}| script without modification. You are free to
+re-write it to follow some other convention. The included
+\VERB|\FunctionTok{awk}| script is designed to use pdfs with filenames
+that begin with an abbreviation designating the collection, followed by
+a space, followed by any other text. For example, if one has the
+\emph{Hymns on the Church}, the \emph{Hymns on Faith}, and the
+\emph{Metrical Discourses on Faith}, the filenames for each would be:
+\VERB|\NormalTok{HdE }\DataTypeTok{\textless{}}\KeywordTok{whatever}\DataTypeTok{\textgreater{}}\NormalTok{.pdf}|
 and
-\VERB|\ExtensionTok{HdF} \OperatorTok{\textless{}}\NormalTok{whatever}\OperatorTok{\textgreater{}}\NormalTok{.pdf}|
+\VERB|\NormalTok{HdF }\DataTypeTok{\textless{}}\KeywordTok{whatever}\DataTypeTok{\textgreater{}}\NormalTok{.pdf}|
 and
-\VERB|\ExtensionTok{SdF} \OperatorTok{\textless{}}\NormalTok{whatever}\OperatorTok{\textgreater{}}\NormalTok{.pdf}|.
+\VERB|\NormalTok{SdF }\DataTypeTok{\textless{}}\KeywordTok{whatever}\DataTypeTok{\textgreater{}}\NormalTok{.pdf}|.
 
 \subsection{Explore}\label{explore}
+
+Following the UNIX philosophy, we first compose small searches
+interactively at the command line. Once one has worked out the pieces,
+they can be put together into a single pipeline.
 
 \textbf{Getting a list of matches}
 
@@ -505,10 +512,10 @@ The pipe character in a regular expression serves as a logical
 positives}
 
 \begin{Shaded}
-\begin{Highlighting}[]
-\ExtensionTok{pdfgrep}  \AttributeTok{{-}P} \StringTok{\textquotesingle{}(?\textless{}![Zz]u )Ende(?! des [a{-}z])\textquotesingle{}}\DataTypeTok{\textbackslash{}}
-\NormalTok{{-}{-}page{-}number=label }\AttributeTok{{-}H} \AttributeTok{{-}C}\NormalTok{ 3}\DataTypeTok{\textbackslash{}}
-\NormalTok{{-}{-}color=always }\PreprocessorTok{*}\NormalTok{.pdf }\KeywordTok{|} \FunctionTok{grep} \AttributeTok{{-}v} \AttributeTok{{-}e} \StringTok{\textquotesingle{}[Zz]u\textquotesingle{}}
+\begin{Highlighting}[numbers=left,,]
+\ExtensionTok{pdfgrep}  \AttributeTok{{-}P} \StringTok{\textquotesingle{}(?\textless{}![Zz]u )Ende(?! des [a{-}z])\textquotesingle{}} 
+\ExtensionTok{{-}{-}page{-}number=label} \AttributeTok{{-}H} \AttributeTok{{-}C}\NormalTok{ 3 }
+\ExtensionTok{{-}{-}color=always} \PreprocessorTok{*}\NormalTok{.pdf }\KeywordTok{|} \FunctionTok{grep} \AttributeTok{{-}v} \AttributeTok{{-}e} \StringTok{\textquotesingle{}[Zz]u\textquotesingle{}}
 \end{Highlighting}
 \end{Shaded}
 

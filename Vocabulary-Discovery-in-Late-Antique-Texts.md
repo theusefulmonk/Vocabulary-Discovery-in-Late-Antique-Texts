@@ -6,6 +6,7 @@ csl: '/Users/drew/.pandoc/csl/chicago-fullnote-bibliography-short-title-subseque
 bibliography: 'vocabulary.bib'
 suppress-bibliography: false
 papersize: letter
+listings: true
 documentclass: 'tufte-handout'
 classoptions: 
 	- 12pt
@@ -115,14 +116,14 @@ We take for granted here that you already have one or more ocr'ed pdf files that
 
 ## Repaginate
 
-We will use the accompanying file `repaginate.tex`{.bash}. We start with the scanned pdf's that need repagination in the same directory as `repaginate.tex`{.bash}. We then make any necessary changes to the `repaginate.tex`{.bash} file. 
+We will use the accompanying file `repaginate.tex`{.markdown}. We start with the scanned pdf's that need repagination in the same directory as `repaginate.tex`{.markdown}. We then make any necessary changes to the `repaginate.tex`{.markdown} file. 
 
-If the original file is Beck's translation of the *Hymns on the Church* with the filename `beck_1960.pdf`{.bash}, then we first examine the scan to determine the absolute page numbers of each section requiring distinct pagination:
+If the original file is Beck's translation of the *Hymns on the Church* with the filename `beck_1960.pdf`{.markdown}, then we first examine the scan to determine the absolute page numbers of each section requiring distinct pagination:
 
 - 1-6 should be numbered i-vi
 - 7-end should be numbered 7-146
 
-In `repaginate.tex`{.bash} we comment out lines 38-39 because we don't need any cover pages. Then, we change line 54 to include pages 1-6, and the filename to `sources/beck_1960.pdf`{.bash}. We change line 57 to include the rest of the pages 7-end using the string `7-`{.bash}. Once again we must update the filename to `sources/beck_1960.pdf`{.bash}. This will compile a new pdf with the specified pages, using the specified page labels.
+In `repaginate.tex`{.markdown} we comment out lines 38-39 because we don't need any cover pages. Then, we change line 54 to include pages 1-6, and the filename to `sources/beck_1960.pdf`{.markdown}. We change line 57 to include the rest of the pages 7-end using the string `7-`{.markdown}. Once again we must update the filename to `sources/beck_1960.pdf`{.markdown}. This will compile a new pdf with the specified pages, using the specified page labels.
 
 The final compilation results from the following command:
 
@@ -132,9 +133,11 @@ lualatex repaginate.tex
 
 The result should be a pdf file with the correct page labels.
 
-At this point the file is ready to use for searches. However, for this demonstration we are also going to establish a file naming convention that will help produce a useful report at the end. The convention is convenient, but arbitrary, and is necessary only if you want to use my `awk` script without modification. You are free to re-write it to follow some other convention. The included awk script is designed to use pdfs with filenames that begin with an abbreviation designating the collection, followed by a space, followed by any other text. For example, if one has the *Hymns on the Church*, the *Hymns on Faith*, and the *Metrical Discourses on Faith*, the filenames for each would be: `HdE <whatever>.pdf`{.bash} and `HdF <whatever>.pdf`{.bash} and `SdF <whatever>.pdf`{.bash}.
+At this point the file is ready to use for searches. However, for this demonstration we are also going to establish a file naming convention that will help produce a useful report at the end. The convention is convenient, but arbitrary, and is necessary only if you want to use my `awk`{.bash} script without modification. You are free to re-write it to follow some other convention. The included `awk`{.bash} script is designed to use pdfs with filenames that begin with an abbreviation designating the collection, followed by a space, followed by any other text. For example, if one has the *Hymns on the Church*, the *Hymns on Faith*, and the *Metrical Discourses on Faith*, the filenames for each would be: `HdE <whatever>.pdf`{.markdown} and `HdF <whatever>.pdf`{.markdown} and `SdF <whatever>.pdf`{.markdown}.
 
 ## Explore
+
+Following the UNIX philosophy, we first compose small searches interactively at the command line. Once one has worked out the pieces, they can be put together into a single pipeline.
 
 **Getting a list of matches**
 
@@ -176,9 +179,9 @@ The pipe character in a regular expression serves as a logical `OR`{.bash}.
 
 **Lookbehinds and pipelines when dealing with many false positives**
 
-```bash
-pdfgrep  -P '(?<![Zz]u )Ende(?! des [a-z])'\
---page-number=label -H -C 3\
+```bash {.numberLines}
+pdfgrep  -P '(?<![Zz]u )Ende(?! des [a-z])' 
+--page-number=label -H -C 3 
 --color=always *.pdf | grep -v -e '[Zz]u'
 ```
 In this example, we find instances of the word Ende but which are not preceded by the word Zu, because the phrase "Zu Ende" is very common in these translations. It corresponds to *šlem*, a scribal note in the mss. common at the end of a *madrāšâ* or collection of *madrāšê*.
