@@ -596,7 +596,8 @@ regular expressions, a more sophisticated tool. We invoke it via the
 \texttt{-P} flag. The negative lookbehind itself is
 \texttt{(?\textless{}!\ .\ .\ .)} and the negative lookahead is
 \texttt{(?!\ .\ .\ .)}. This excludes matches in which the word
-\emph{Ende} is preceded or followed by the most common
+\emph{Ende} is preceded or followed by the most common patterns we wish
+to exclude.
 
 But there's still a problem. OCR'ed texts often have inconsistent
 whitespace between words, and thus there are still some passages in
@@ -629,49 +630,31 @@ when using the command in a pipeline to produce a report.
 
 \subsection{Report}\label{report}
 
-\begin{enumerate}
-\def\labelenumi{\arabic{enumi}.}
-\setcounter{enumi}{2}
-\tightlist
-\item
-  repaginate. See
-  https://pdfa.org/glossary-of-pdf-terms/\#integer-page-index
+By default, these commands simply print the information they produce to
+your screen, referred to as standard output: \texttt{stdout}. Once
+you've built up a number of small searches that can easily be recalled
+using your shell's history function, you may wish to save the results to
+a file so that you can use them in the future. The easiest way to do
+this is to simple redirect to output stream to a file, using a
+redirection operator: \texttt{\textgreater{}}.\footnote{Chet Ramey and
+  Brian Fox, \emph{The GNU Bash Reference Manual}, 5.2 ed., 2022, sec.
+  3.6.} For example:
 
-  \begin{enumerate}
-  \def\labelenumii{\arabic{enumii}.}
-  \setcounter{enumii}{3}
-  \tightlist
-  \item
-    For books with distinct pagination of front matter and body text.
-    There are two options. In this case I've found a graphical tool
-    really is the most efficient. Otherwise edit internal structure
-    using qpdf and a plain text editor.
-  \item
-    For articles and chapters with cover page(s) and pagination
-    beginning in the midst of a larger sequence. The best option in this
-    case is to use latex. There are several options here:
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{pdfgrep} \AttributeTok{{-}e} \StringTok{\textquotesingle{}[Ss]ch[aä]tz\textquotesingle{}}\NormalTok{ HdE}\DataTypeTok{\textbackslash{} }\NormalTok{German.pdf }
+\ExtensionTok{{-}H} \AttributeTok{{-}{-}page{-}number}\OperatorTok{=}\NormalTok{label }\OperatorTok{\textgreater{}}\NormalTok{ results.txt}
+\end{Highlighting}
+\end{Shaded}
 
-    \begin{enumerate}
-    \def\labelenumiii{\arabic{enumiii}.}
-    \tightlist
-    \item
-      Use a graphical tool, such as PDFExpert, Adobe Reader or MacOS
-      Preview. If using MacOS Preview, know that the it must be set to
-      use ``logical page numbers.'' Tested tools include: Acrobat
-      Reader, Okular, Sumatra, Skim. Skim, Sumatra, and Acrobat Reader
-      cannot do it
-    \end{enumerate}
-  \item
-    recombine (most tools I've found don't do this without messing with
-    the page labels.)
-  \end{enumerate}
-\item
-  Basic, exploratory searches
-\item
-  Once you've found things of interest, combine searches into a single
-  script, expand searches to more files, and script the results into a
-  report.
-\end{enumerate}
+The result is a plain text file that matches what is output on screen,
+but without any colors. It is possible to output this information into
+even more useful formats with the help of another standard UNIX tool:
+\texttt{awk}. Awk also uses regexes. It's data model is to loop through
+all the lines of a file, performing tasks depending on what it finds. In
+this case, we can use it to transform the output of pdfgrep into a csv
+(comma separated value) file that can be opened in a spreadsheet
+application or fed into a data analysis pipeline.
 
 \section{Notes}\label{notes}
 
@@ -701,6 +684,10 @@ California: {``O'Reilly Media, Inc.''} 2012.
 \bibitem[\citeproctext]{ref-kernighan1984}
 Kernighan, Brian W., and Rob Pike. \emph{The UNIX Programming
 Environment}. Englewood Cliffs, New Jersey: Prentice-Hall, 1984.
+
+\bibitem[\citeproctext]{ref-ramey2022}
+Ramey, Chet, and Brian Fox. \emph{The GNU Bash Reference Manual}. 5.2
+ed., 2022.
 
 \bibitem[\citeproctext]{ref-robbins2005}
 Robbins, Arnold, and Nelson H. F. Beebe. \emph{Classic Shell Scripting:

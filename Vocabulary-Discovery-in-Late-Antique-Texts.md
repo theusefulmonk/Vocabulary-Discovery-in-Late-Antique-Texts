@@ -210,15 +210,16 @@ pdfgrep  -P '(?<![Zz]u )Ende(?! des [a-z])'
 
 ## Report
 
-By default, these commands simply print the information they produce to your screen, referred to as standard output: `stdout`. Once you've built up a number of small searches that can easily be recalled using your shell's history function, and
+By default, these commands simply print the information they produce to your screen, referred to as standard output: `stdout`. Once you've built up a number of small searches that can easily be recalled using your shell's history function, you may wish to save the results to a file so that you can use them in the future. The easiest way to do this is to simple redirect to output stream to a file, using a redirection operator: `>`.[@ramey2022, § 3.6.] For example:
 
-3. repaginate. See https://pdfa.org/glossary-of-pdf-terms/#integer-page-index
-	4. For books with distinct pagination of front matter and body text. There are two options. In this case I've found a graphical tool really is the most efficient. Otherwise edit internal structure using qpdf and a plain text editor. 
-	5. For articles and chapters with cover page(s) and pagination beginning in the midst of a larger sequence. The best option in this case is to use latex. There are several options here:
-		1. Use a graphical tool, such as PDFExpert, Adobe Reader or MacOS Preview. If using MacOS Preview, know that the it must be set to use "logical page numbers." Tested tools include: Acrobat Reader, Okular, Sumatra, Skim. Skim, Sumatra, and Acrobat Reader cannot do it
-	4. recombine (most tools I've found don't do this without messing with the page labels.)
-2. Basic, exploratory searches
-3. Once you've found things of interest, combine searches into a single script, expand searches to more files, and script the results into a report.
+```bash
+pdfgrep -e '[Ss]ch[aä]tz' HdE\ German.pdf 
+-H --page-number=label > results.txt
+```
+
+The result is a plain text file that matches what is output on screen, but without any colors. It is possible to output this information into even more useful formats with the help of another standard UNIX tool: `awk`. Awk also uses regexes. It's data model is to loop through all the lines of a file, performing tasks depending on what it finds. In this case, we can use it to transform the output of pdfgrep into a csv (comma separated value) file that can be opened in a spreadsheet application or fed into a data analysis pipeline.
+
+
 
 # Notes 
 
