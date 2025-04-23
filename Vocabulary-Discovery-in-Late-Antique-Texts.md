@@ -191,7 +191,7 @@ pdfgrep  -P '(?<![Zz]u )Ende(?! des [a-z])'
 --color=always *.pdf | grep -v -e '[Zz]u'
 ```
 
-In this example, we find instances of the word Ende but which are not preceded by the word Zu, because the phrase "Zu Ende" is very common in these translations. It corresponds to *šlem*, a scribal note in the mss. common at the end of a *madrāšâ* or collection of *madrāšê*.
+In this example, we find instances of the word *Ende* but which are not preceded by the word *Zu*, because the phrase *Zu Ende* is very common. It is Beck's usual translation of *šlem*, a scribal note in the mss. typical at the end of a *madrāšâ* or collection of *madrāšê*. Being a scribal note, it is of no interest for understanding Ephrem's word usage, so we exclude it in the present inquiry.
 
 Here's a version that omits the `-C` flag. It is not useful when using the command in a pipeline to produce a report.
 
