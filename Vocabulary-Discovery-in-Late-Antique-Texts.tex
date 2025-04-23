@@ -529,7 +529,7 @@ line count, HdE seems to use the language of treasure more frequently.
 
 Here we search for the term ``Gehenna'' all the pdfs in the current
 directory. The expression \VERB|\ExtensionTok{*.pdf}| is an example of a
-glob. The shell expands the star character to any string of any length,
+glob. The shell expands the star character to a string of any length,
 which means that our search will match all the filenames in the
 directory that end with the extension ``pdf.'' The proper name Gehenna
 admits of more than one spelling, sometimes due to poor quality OCR. But
@@ -555,8 +555,10 @@ Another way to do that appears in the following code snippet:
 The pipe character in a regular expression serves as a logical
 \VERB|\ExtensionTok{OR}|. This permits us to search for the concept of a
 kingdom in multiple languages. If we had, for instance, Leloir's French
-translation of Ephrem's \emph{Diatessaron} commentary, we could add that
-to the regex, using the pipe character.
+translation of Ephrem's \emph{Diatessaron} commentary, we could add the
+French word for kingdom to the regex, using the pipe character. To make
+sure that the logical \VERB|\ExtensionTok{OR}| separates whole words and
+not single characters, we group them using round parentheses.
 
 \begin{enumerate}
 \def\labelenumi{(\arabic{enumi})}
@@ -583,8 +585,31 @@ note in the mss. typical at the end of a \emph{madrāšâ} or collection of
 understanding Ephrem's word usage, so we exclude it in the present
 inquiry.
 
-Here's a version that omits the \texttt{-C} flag. It is not useful when
-using the command in a pipeline to produce a report.
+Doing this requires the use of a negative lookbehind, which is not a
+feature of basic or extended regular expressions.\footnote{{``Advanced
+  Grep Topics''}
+  (\url{https://caspar.bgsu.edu/~courses/Stats/Labs/Handouts/grepadvanced.htm},
+  2023); Michael Fitzgerald, \emph{Introducing Regular Expressions}
+  (Sebastapol, California: {``O'Reilly Media, Inc.''} 2012), 78.} Thus
+we must invoke \VERB|\ExtensionTok{pdfgrep}| with perl compatible
+regular expressions, a more sophisticated tool. We invoke it via the
+\texttt{-P} flag. The negative lookbehind itself is
+\texttt{(?\textless{}!\ .\ .\ .)} and the negative lookahead is
+\texttt{(?!\ .\ .\ .)}. This excludes matches in which the word
+\emph{Ende} is preceded or followed by the most common
+
+But there's still a problem. OCR'ed texts often have inconsistent
+whitespace between words, and thus there are still some passages in
+which the undesired matches are included due to variable whitespace.
+Lookbehinds and Lookaheads require fixed length strings, so we cannot
+account for the variability that way. Thus we pipe the results into a
+second invocation of \texttt{grep} to filter out any instances of
+\emph{Zu} remaining. The inversion flag \texttt{-v} accomplishes this
+nicely. The result is not perfect, but it excludes a sufficient number
+of false positives that any remaining ones can be discovered manually.
+
+Here's a version that omits the \texttt{-C} flag, which is not useful
+when using the command in a pipeline to produce a report.
 
 \begin{enumerate}
 \def\labelenumi{(\arabic{enumi})}
@@ -660,9 +685,18 @@ accessed 2025-04-16
 
 \phantomsection\label{refs}
 \begin{CSLReferences}{1}{0}
+\bibitem[\citeproctext]{ref-grep2023b}
+{``Advanced Grep Topics.''}
+\url{https://caspar.bgsu.edu/~courses/Stats/Labs/Handouts/grepadvanced.htm},
+2023.
+
 \bibitem[\citeproctext]{ref-pdfassociation2025}
 Association, PDF. {``Glossary of PDF Terms.''}
 \url{https://pdfa.org/glossary-of-pdf-terms/\#p}, 2025.
+
+\bibitem[\citeproctext]{ref-fitzgerald2012}
+Fitzgerald, Michael. \emph{Introducing Regular Expressions}. Sebastapol,
+California: {``O'Reilly Media, Inc.''} 2012.
 
 \bibitem[\citeproctext]{ref-kernighan1984}
 Kernighan, Brian W., and Rob Pike. \emph{The UNIX Programming

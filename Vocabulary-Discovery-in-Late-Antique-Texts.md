@@ -4,6 +4,7 @@ author: Andrew J. Hayes
 date: May 23, 2025
 csl: '/Users/drew/.pandoc/csl/chicago-fullnote-bibliography-short-title-subsequent.csl'
 bibliography: 'vocabulary.bib'
+shorttitle: Efficient Vocabulary Discovery
 suppress-bibliography: false
 papersize: letter
 listings: true
@@ -171,7 +172,7 @@ The `-c` flag is used to count the number of matches, per file. The result shows
  pdfgrep *.pdf -e 'G[aei]hen(n)?a' --page-number=label -H
 ```
 
-Here we search for the term "Gehenna" all the pdfs in the current directory. The expression `*.pdf`{.bash} is an example of a glob. The shell expands the star character to any string of any length, which means that our search will match all the filenames in the directory that end with the extension "pdf." The proper name Gehenna admits of more than one spelling, sometimes due to poor quality OCR. But the same feature is also useful for searching in multiple languages at once.
+Here we search for the term "Gehenna" all the pdfs in the current directory. The expression `*.pdf`{.bash} is an example of a glob. The shell expands the star character to a string of any length, which means that our search will match all the filenames in the directory that end with the extension "pdf." The proper name Gehenna admits of more than one spelling, sometimes due to poor quality OCR. But the same feature is also useful for searching in multiple languages at once.
 
 (@Example5) **Searching in multiple languages simultaneously**
 
@@ -181,7 +182,7 @@ Another way to do that appears in the following code snippet:
 pdfgrep -i -e '([Kk]ingdom)|(Königtum)|([Rr]eich)' --page-number=label -H *.pdf
 ```
 
-The pipe character in a regular expression serves as a logical `OR`{.bash}. This permits us to search for the concept of a kingdom in multiple languages. If we had, for instance, Leloir's French translation of Ephrem's *Diatessaron* commentary, we could add that to the regex, using the pipe character.
+The pipe character in a regular expression serves as a logical `OR`{.bash}. This permits us to search for the concept of a kingdom in multiple languages. If we had, for instance, Leloir's French translation of Ephrem's *Diatessaron* commentary, we could add the French word for kingdom to the regex, using the pipe character. To make sure that the logical `OR`{.bash} separates whole words and not single characters, we group them using round parentheses.
 
 (@Example6) **Lookbehinds and pipelines when dealing with many false positives**
 
@@ -193,7 +194,11 @@ pdfgrep  -P '(?<![Zz]u )Ende(?! des [a-z])'
 
 In this example, we find instances of the word *Ende* but which are not preceded by the word *Zu*, because the phrase *Zu Ende* is very common. It is Beck's usual translation of *šlem*, a scribal note in the mss. typical at the end of a *madrāšâ* or collection of *madrāšê*. Being a scribal note, it is of no interest for understanding Ephrem's word usage, so we exclude it in the present inquiry.
 
-Here's a version that omits the `-C` flag. It is not useful when using the command in a pipeline to produce a report.
+Doing this requires the use of a negative lookbehind, which is not a feature of basic or extended regular expressions.[@grep2023b; @fitzgerald2012, p. 78.] Thus we must invoke `pdfgrep`{.bash} with perl compatible regular expressions, a more sophisticated tool. We invoke it via the `-P` flag. The negative lookbehind itself is `(?<! . . .)` and the negative lookahead is `(?! . . .)`. This excludes matches in which the word *Ende* is preceded or followed by the most common patterns we wish to exclude.
+
+But there's still a problem. OCR'ed texts often have inconsistent whitespace between words, and thus there are still some passages in which the undesired matches are included due to variable whitespace. Lookbehinds and Lookaheads require fixed length strings, so we cannot account for the variability that way. Thus we pipe the results into a second invocation of `grep` to filter out any instances of *Zu* remaining. The inversion flag `-v` accomplishes this nicely. The result is not perfect, but it excludes a sufficient number of false positives that any remaining ones can be discovered manually.
+
+Here's a version that omits the `-C` flag, which is not useful when using the command in a pipeline to produce a report.
 
 (@Example7) **Modified Version**
 
@@ -204,6 +209,8 @@ pdfgrep  -P '(?<![Zz]u )Ende(?! des [a-z])'
 ```
 
 ## Report
+
+By default, these commands simply print the information they produce to your screen, referred to as standard output: `stdout`. Once you've built up a number of small searches that can easily be recalled using your shell's history function, and
 
 3. repaginate. See https://pdfa.org/glossary-of-pdf-terms/#integer-page-index
 	4. For books with distinct pagination of front matter and body text. There are two options. In this case I've found a graphical tool really is the most efficient. Otherwise edit internal structure using qpdf and a plain text editor. 
