@@ -106,9 +106,9 @@ Unfortunately, a dumb scan of the printed original needs the page labels added, 
 
 # Workflow
 
-## Pre-requisite steps
+## Pre-requisites
 
-We take for granted here that you already have one or more ocr'ed pdf files that meet the following requirements
+I take for granted that you already have one or more ocr'ed pdf files that meet the following requirements:
 
 1. scanned at 300 dpi or better;
 2. OCR'ed using a high quality OCR engine (Abbyy recommended);
