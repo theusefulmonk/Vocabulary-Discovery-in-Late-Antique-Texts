@@ -247,7 +247,7 @@ This produces a file called `gehenna.csv` containing all the instances where the
 
 # Summary and Limitations 
 
-UNIX command line tools, when put together, constitute a powerful, flexible, and free way to construct a searchable corpus of pdfs from physical originals, explore the corpus and produce usable reports to show approximate information about the location of vocabulary of interest, its frequency, and distribution. 
+UNIX command line tools, when put together, constitute a powerful, flexible, and free way to construct a searchable corpus of pdfs from physical originals, explore the corpus, and produce usable reports to show approximate information about the location of vocabulary of interest, its frequency, and distribution. 
 
 Because the OCR on which it relies is imperfect, this workflow requires care and attention to use in a responsible way. It will produce false positives. It will miss some (possibly) important passages in which the vocabulary of interest appears. Matches should always be humanly verified. And of course, a list of matches functions best as a guide for reading the original sources, which is the goal of this workflow. It points out the likely places for further study, much as a print or digital concordance does. The difference is that you are able to construct such a concordance to suit your exact requirements, and that you can update it over time as you improve and curate your corpus of scanned texts.
 
