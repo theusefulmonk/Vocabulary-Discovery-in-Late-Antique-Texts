@@ -115,7 +115,7 @@ We take for granted here that you already have one or more ocr'ed pdf files that
 3. Optionally perform other image optimizations like deskew and black and white filtering
 -->
 
-## Repaginate
+## Phase 1: Repaginate
 
 We will use the accompanying file `repaginate.tex`{.markdown}. We start with the scanned pdf's that need repagination in the same directory as `repaginate.tex`{.markdown}. We then make any necessary changes to the `repaginate.tex`{.markdown} file. 
 
@@ -136,7 +136,7 @@ The result should be a pdf file with the correct page labels.
 
 At this point the file is ready to use for searches. One can build up several such pdfs in the same way, place them in a single directory, and search them all at once. For this demonstration we are also going to establish a file naming convention that will help produce a useful report at the end. The convention is convenient, but arbitrary, and is necessary only if you want to use my `awk`{.bash} script without modification. You are free to re-write it to follow some other convention. The included `awk`{.bash} script is designed to use pdfs with filenames that begin with an abbreviation designating the collection, followed by a space, followed by any other text. For example, if one has the *Hymns on the Church*, the *Hymns on Faith*, and the *Metrical Discourses on Faith*, the filenames for each would be: `HdE <whatever>.pdf`{.markdown} and `HdF <whatever>.pdf`{.markdown} and `SdF <whatever>.pdf`{.markdown}.
 
-## Explore
+## Phase 2: Explore
 
 Following the UNIX philosophy, we first compose small searches interactively at the command line. Once one has worked out the pieces, they can be put together into a single pipeline.
 
@@ -208,7 +208,7 @@ pdfgrep  -P '(?<![Zz]u )Ende(?! des [a-z])'
 --color=always *.pdf | grep -v -e '[Zz]u'
 ```
 
-## Report
+## Phase 3: Report
 
 By default, these commands simply print the information they produce to your screen, referred to as standard output: `stdout`. Once you've built up a number of small searches that can easily be recalled using your shell's history function, you may wish to save the results to a file so that you can use them in the future. The easiest way to do this is to simple redirect to output stream to a file, using a redirection operator: `>`.[@ramey2022, § 3.6.] For example:
 
