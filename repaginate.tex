@@ -36,7 +36,7 @@
 
 %% For one or more coverpages. Comment out if unneeded.
 \renewcommand*{\thepage}{Cover-\arabic{page}}
-\includepdf[pages=1]{jacques-split.pdf} %% Filename must be without spaces.
+\includepdf[pages=240]{sources/hdn-ocr-optimized.pdf} %% Filename must be without spaces.
 
 %% You can also add your own titlepage as a cover if you like. In that case, 
 %% comment out the \includepdf instruction and add instead the following:
@@ -51,11 +51,12 @@
 %% For frontmatter with lowercase roman numerals. Comment out if not needed 
 %% (such as is usually the case for journal articles).
 \renewcommand*{\thepage}{\roman{page}} %% Use \Roman for upper case Roman numerals.
-\includepdf[pages=2-47]{jacques-split.pdf} %% Filename must be without spaces.
+\setcounter{page}{1} %% Set the counter to whatever arbitrary value
+\includepdf[pages=1-14]{sources/hdn-ocr-optimized.pdf} %% Filename must be without spaces.
 %% for body with regular arabic numerals
 \renewcommand*{\thepage}{\arabic{page}}
 \setcounter{page}{1} %% Set the counter to whatever arbitrary value
 %% you want. For a book, it's usually 1
-\includepdf[pages=48-]{jacques-split.pdf} %% Filename must be without spaces.
+\includepdf[pages=15-]{sources/hdn-ocr-optimized.pdf} %% Filename must be without spaces.
 
 \end{document}
