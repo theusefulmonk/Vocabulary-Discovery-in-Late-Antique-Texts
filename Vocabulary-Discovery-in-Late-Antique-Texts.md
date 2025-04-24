@@ -125,9 +125,9 @@ I take for granted that you already have one or more ocr'ed pdf files that meet 
 
 ## Phase 1: Repaginate
 
-We will use the accompanying file `repaginate.tex`{.markdown}. We start with the scanned pdf's that need repagination in the same directory as `repaginate.tex`{.markdown}. We then make any necessary changes to the `repaginate.tex`{.markdown} file. 
+We will use the accompanying file `repaginate.tex`{.markdown}. We start with the scanned pdfs that need repagination in a dedicated `sources` directory. We then make any necessary changes to the `repaginate.tex`{.markdown} file and typeset it.
 
-If the original file is Beck's translation of the *Hymns on the Nativity* with the filename `hdn-ocr-optimized.pdf`{.markdown}, then we first examine the scan to determine the absolute page numbers of each section requiring distinct pagination:
+In our example, the original file is Beck's translation of the *Hymns on the Nativity* with the filename `hdn-ocr-optimized.pdf`{.markdown}. We first examine the scan to determine the absolute page numbers of each section requiring distinct pagination:
 
 - 1-14 should be numbered i-xiv
 - 15-end should be numbered 15-226
