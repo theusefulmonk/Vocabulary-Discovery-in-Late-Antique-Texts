@@ -60,7 +60,7 @@ The workflow demonstrated here is designed to address a particular difficulty in
 
 But what to do if no such tool exists, is pay-walled, or is inaccessible for some other reason? Many scholars maintain their own corpora of scanned pdfs for private research use. Optical character recognition (OCR) makes digital search of such texts possible. This presentation shows how to search a local directory tree of OCR'ed pdf files of primary sources in original or in translation in an efficient manner using freely available tools in the UNIX programming environment. These methods are imperfect, but nevertheless highly useful for assembling a working vocabulary list as a starting point for careful reading and research. Accompanying this presentation is a [public repository on github](==insert link==) with sample command-line recipes and instructions allowing any scholar to download and experiment with them.
 
-Note thate even when a native digital search tool is available, it is sometimes convenient and practical to employ the tools and techniques presented here. The following are four such cases:
+Note that even when a native digital search tool is available, it is sometimes convenient and practical to employ the tools and techniques presented here. The following are four such cases:
 
 1. One wants to search a large number of pdf files from disparate corpora at once.
 2. One wants to search in multiple languages simultaneously.
