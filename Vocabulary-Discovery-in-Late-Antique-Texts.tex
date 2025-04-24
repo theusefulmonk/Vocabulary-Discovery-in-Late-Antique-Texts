@@ -640,6 +640,13 @@ redirection operator: \texttt{\textgreater{}}.\footnote{Chet Ramey and
   Brian Fox, \emph{The GNU Bash Reference Manual}, 5.2 ed., 2022, sec.
   3.6.} For example:
 
+\begin{enumerate}
+\def\labelenumi{(\arabic{enumi})}
+\setcounter{enumi}{7}
+\tightlist
+\item
+\end{enumerate}
+
 \begin{Shaded}
 \begin{Highlighting}[]
 \ExtensionTok{pdfgrep} \AttributeTok{{-}e} \StringTok{\textquotesingle{}[Ss]ch[aä]tz\textquotesingle{}}\NormalTok{ HdE}\DataTypeTok{\textbackslash{} }\NormalTok{German.pdf }
@@ -650,11 +657,67 @@ redirection operator: \texttt{\textgreater{}}.\footnote{Chet Ramey and
 The result is a plain text file that matches what is output on screen,
 but without any colors. It is possible to output this information into
 even more useful formats with the help of another standard UNIX tool:
-\texttt{awk}. Awk also uses regexes. It's data model is to loop through
-all the lines of a file, performing tasks depending on what it finds. In
-this case, we can use it to transform the output of pdfgrep into a csv
-(comma separated value) file that can be opened in a spreadsheet
-application or fed into a data analysis pipeline.
+\texttt{awk}. Like \texttt{grep} \texttt{awk} uses regexes. Its data
+model is to loop through all the lines of a file, performing tasks
+depending on what it finds. In this case, we can use it to transform the
+output of pdfgrep into a csv (comma separated value) file that can be
+opened in a spreadsheet application or fed into a data analysis
+pipeline.
+
+The repository includes a very simple awk script
+(\texttt{grep\_to\_csv.awk}) that parses the output of \texttt{pdfgrep}
+and structures it as a csv file:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ControlFlowTok{BEGIN} \OperatorTok{\{} \BuiltInTok{FS} \OperatorTok{=} \StringTok{":"}\OperatorTok{;} \KeywordTok{print} \StringTok{"text"}\OperatorTok{,} \StringTok{","}\OperatorTok{,} \StringTok{"citation"} \OperatorTok{\}}
+\OperatorTok{\{} 
+\NormalTok{    cutoff }\OperatorTok{=} \FunctionTok{index}\OperatorTok{(}\DataTypeTok{$1}\OperatorTok{,} \StringTok{" "}\OperatorTok{);}
+    \CommentTok{\# print "cutoff index is " cutoff \# for debugging purposes}
+    \KeywordTok{print} \FunctionTok{substr}\OperatorTok{(}\DataTypeTok{$1}\OperatorTok{,} \DecValTok{1}\OperatorTok{,}\NormalTok{ cutoff}\OperatorTok{)} \StringTok{","}\OperatorTok{,} \DataTypeTok{$2} 
+\OperatorTok{\}} 
+\end{Highlighting}
+\end{Shaded}
+
+This awk script begins by setting the field separator to \texttt{:},
+which always appears when \texttt{grep} is invoked with the \texttt{-H}
+flag. Doing this causes the first field or chunk of text on each line to
+be the filename in which a given match was found. It then uses
+\texttt{awk}'s built in string \texttt{index()} function to determine
+where a space occurs in that first field first field and the
+\texttt{substr()} (substring) function to extract the first part of the
+filename before the space.\footnote{Alfred V. Aho, Brian W. Kernighan,
+  and Peter J. Weinberger, \emph{The AWK Programming Language}
+  (Addison-Wesley, 1988), 41--43. This is the original manual, but still
+  relevant. \texttt{Awk} is included in the POSIX standard, but the most
+  up to date version can be found at
+  \href{https://github.com/onetrueawk/awk}{onetrueawk}.} Per our naming
+convention, this substring constitutes the abbreviation of the work in
+question: \emph{HdE} or \emph{SdF}, for example. And the \texttt{print}
+instruction prints that abbreviation, followed by a comma, followed by
+the page number produced by \texttt{pdfgrep} for each match. The result
+is a simple csv file.
+
+Here is an example of the whole pipeline in action:
+
+\begin{enumerate}
+\def\labelenumi{(\arabic{enumi})}
+\setcounter{enumi}{8}
+\tightlist
+\item
+  \textbf{Report pipeline}
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+ \ExtensionTok{pdfgrep} \PreprocessorTok{*}\NormalTok{.pdf }\AttributeTok{{-}e} \StringTok{\textquotesingle{}G[aei]hen(n)?a\textquotesingle{}}
+  \ExtensionTok{{-}{-}page{-}number=label}  \KeywordTok{|} \FunctionTok{awk} \AttributeTok{{-}f}\NormalTok{ grep\_to\_csv.awk }\OperatorTok{\textgreater{}}\NormalTok{ gehenna.csv}
+\end{Highlighting}
+\end{Shaded}
+
+This produces a file called \texttt{gehenna.csv} containing all the
+instances where the term ``Gehenna'' appears in all pdf files in the
+directory.
 
 \section{Notes}\label{notes}
 
@@ -666,6 +729,9 @@ Source:
 https://helpx.adobe.com/acrobat/using/manipulating-deleting-renumbering-pdf-pages.html?x-product=Helpx\%2F1.0.0\&x-product-location=Search\%3AForums\%3Alink\%2F3.6.7
 accessed 2025-04-16
 
+\section*{Bibliography}\label{bibliography}
+\addcontentsline{toc}{section}{Bibliography}
+
 \phantomsection\label{refs}
 \begin{CSLReferences}{1}{0}
 \bibitem[\citeproctext]{ref-grep2023b}
@@ -673,9 +739,9 @@ accessed 2025-04-16
 \url{https://caspar.bgsu.edu/~courses/Stats/Labs/Handouts/grepadvanced.htm},
 2023.
 
-\bibitem[\citeproctext]{ref-pdfassociation2025}
-Association, PDF. {``Glossary of PDF Terms.''}
-\url{https://pdfa.org/glossary-of-pdf-terms/\#p}, 2025.
+\bibitem[\citeproctext]{ref-aho1988a}
+Aho, Alfred V., Brian W. Kernighan, and Peter J. Weinberger. \emph{The
+AWK Programming Language}. Addison-Wesley, 1988.
 
 \bibitem[\citeproctext]{ref-fitzgerald2012}
 Fitzgerald, Michael. \emph{Introducing Regular Expressions}. Sebastapol,
@@ -684,6 +750,10 @@ California: {``O'Reilly Media, Inc.''} 2012.
 \bibitem[\citeproctext]{ref-kernighan1984}
 Kernighan, Brian W., and Rob Pike. \emph{The UNIX Programming
 Environment}. Englewood Cliffs, New Jersey: Prentice-Hall, 1984.
+
+\bibitem[\citeproctext]{ref-pdfassociation2025}
+PDF Association. {``Glossary of PDF Terms.''}
+\url{https://pdfa.org/glossary-of-pdf-terms/\#p}, 2025.
 
 \bibitem[\citeproctext]{ref-ramey2022}
 Ramey, Chet, and Brian Fox. \emph{The GNU Bash Reference Manual}. 5.2

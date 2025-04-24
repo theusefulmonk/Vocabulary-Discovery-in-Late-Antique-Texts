@@ -212,14 +212,36 @@ pdfgrep  -P '(?<![Zz]u )Ende(?! des [a-z])'
 
 By default, these commands simply print the information they produce to your screen, referred to as standard output: `stdout`. Once you've built up a number of small searches that can easily be recalled using your shell's history function, you may wish to save the results to a file so that you can use them in the future. The easiest way to do this is to simple redirect to output stream to a file, using a redirection operator: `>`.[@ramey2022, § 3.6.] For example:
 
+(@Example8)
 ```bash
 pdfgrep -e '[Ss]ch[aä]tz' HdE\ German.pdf 
 -H --page-number=label > results.txt
 ```
 
-The result is a plain text file that matches what is output on screen, but without any colors. It is possible to output this information into even more useful formats with the help of another standard UNIX tool: `awk`. Awk also uses regexes. It's data model is to loop through all the lines of a file, performing tasks depending on what it finds. In this case, we can use it to transform the output of pdfgrep into a csv (comma separated value) file that can be opened in a spreadsheet application or fed into a data analysis pipeline.
+The result is a plain text file that matches what is output on screen, but without any colors. It is possible to output this information into even more useful formats with the help of another standard UNIX tool: `awk`. Like `grep` `awk` uses regexes. Its data model is to loop through all the lines of a file, performing tasks depending on what it finds. In this case, we can use it to transform the output of pdfgrep into a csv (comma separated value) file that can be opened in a spreadsheet application or fed into a data analysis pipeline.
 
+The repository includes a very simple awk script (`grep_to_csv.awk`) that parses the output of `pdfgrep` and structures it as a csv file: 
 
+```awk
+BEGIN { FS = ":"; print "text", ",", "citation" }
+{ 
+    cutoff = index($1, " ");
+    # print "cutoff index is " cutoff # for debugging purposes
+    print substr($1, 1, cutoff) ",", $2 
+} 
+```
+
+This awk script begins by setting the field separator to `:`, which always appears when `grep` is invoked with the `-H` flag. Doing this causes the first field or chunk of text on each line to be the filename in which a given match was found. It then uses `awk`'s built in string `index()` function to determine where a space occurs in that first field first field and the `substr()` (substring) function to extract the first part of the filename before the space.[@aho1988a, pp. 41-43. This is the original manual, but still relevant. `Awk` is included in the POSIX standard, but the most up to date version can be found at [onetrueawk](https://github.com/onetrueawk/awk).] Per our naming convention, this substring constitutes the abbreviation of the work in question: *HdE* or *SdF*, for example. And the `print` instruction prints that abbreviation, followed by a comma, followed by the page number produced by `pdfgrep` for each match. The result is a simple csv file.
+
+Here is an example of the whole pipeline in action: 
+
+(@Example9) **Report pipeline**
+```bash
+ pdfgrep *.pdf -e 'G[aei]hen(n)?a'
+  --page-number=label  | awk -f grep_to_csv.awk > gehenna.csv
+```
+
+This produces a file called `gehenna.csv` containing all the instances where the term "Gehenna" appears in all pdf files in the directory.
 
 # Notes 
 
@@ -228,3 +250,5 @@ Pdf page labels should be distinguished from any page numbering printed on the d
 
 Source: https://helpx.adobe.com/acrobat/using/manipulating-deleting-renumbering-pdf-pages.html?x-product=Helpx%2F1.0.0&x-product-location=Search%3AForums%3Alink%2F3.6.7
 accessed 2025-04-16
+
+# Bibliography
