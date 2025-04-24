@@ -243,12 +243,12 @@ Here is an example of the whole pipeline in action:
 
 This produces a file called `gehenna.csv` containing all the instances where the term "Gehenna" appears in all pdf files in the directory.
 
-# Notes 
+# Summary and Limitations 
 
-Pdf page labels should be distinguished from any page numbering printed on the document header or footer. See 
-![Screenshot 2025-04-16 at 12.38.19 PM.png](file:///Users/drew/Desktop/Screenshot%202025-04-16%20at%2012.38.19%E2%80%AFPM.png)
+UNIX command line tools, when put together, constitute a powerful, flexible, and free way to construct a searchable corpus of pdfs from physical originals, explore the corpus and produce usable reports to show approximate information about the location of vocabulary of interest, its frequency, and distribution. 
 
-Source: https://helpx.adobe.com/acrobat/using/manipulating-deleting-renumbering-pdf-pages.html?x-product=Helpx%2F1.0.0&x-product-location=Search%3AForums%3Alink%2F3.6.7
-accessed 2025-04-16
+Because the OCR on which it relies is imperfect, this workflow requires care and attention to use in a responsible way. It will produce false positives. It will miss some (possibly) important passages in which the vocabulary of interest appears. Matches should always be humanly verified. And of course, a list of matches functions best as a guide for reading the original sources, which is the goal of this workflow. It points out the likely places for further study, much as a print or digital concordance does. The difference is that you are able to construct such a concordance to suit your exact requirements, and that you can update it over time as you improve and curate your corpus of scanned texts.
+
+\clearpage
 
 # Bibliography
