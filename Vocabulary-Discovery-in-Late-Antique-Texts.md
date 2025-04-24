@@ -106,6 +106,9 @@ Unfortunately, a dumb scan of the printed original needs the page labels added, 
 
 # Workflow
 
+**Cautionary Note:**
+: When working with any important file, such as laboriously obtained scans of physical originals, it is good practice always to edit copies rather than overwriting the original files.
+
 ## Pre-requisites
 
 I take for granted that you already have one or more ocr'ed pdf files that meet the following requirements:
