@@ -189,7 +189,7 @@ Here we search for the term "Gehenna" all the pdfs in the current directory. The
 Another way to do that appears in the following code snippet:
 
 ```bash
-pdfgrep -i -e '([Kk]ingdom)|(Königtum)|([Rr]eich)' --page-number=label -H *.pdf
+pdfgrep -i -e '([Kk]ingdom)|(Königtum)|(\(Himmel\)[Rr]eich)' --page-number=label -H *.pdf
 ```
 
 The pipe character in a regular expression serves as a logical `OR`{.bash}. This permits us to search for the concept of a kingdom in multiple languages. If we had, for instance, Leloir's French translation of Ephrem's *Diatessaron* commentary, we could add the French word for kingdom to the regex, using the pipe character. To make sure that the logical `OR`{.bash} separates whole words and not single characters, we group them using round parentheses.
