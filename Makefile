@@ -1,3 +1,5 @@
+# Tested with pandoc 3.1.12.1 and lualatex 1.16.0 (TexLive 2023, full
+# installation)
 paper: Vocabulary-Discovery-in-Late-Antique-Texts.tex vocabulary.bib
 	lualatex -interaction batchmode -output-directory=build --shell-escape Vocabulary-Discovery-in-Late-Antique-Texts.tex
 
