@@ -1,7 +1,7 @@
 ---
 title: Efficient Vocabulary Discovery in Late Antique Texts at the UNIX Command Line
 author: Andrew J. Hayes
-date: May 23, 2025
+date: May 22, 2025
 csl: '/Users/drew/.pandoc/csl/chicago-fullnote-bibliography-short-title-subsequent.csl'
 bibliography: 'vocabulary.bib'
 shorttitle: Efficient Vocabulary Discovery
