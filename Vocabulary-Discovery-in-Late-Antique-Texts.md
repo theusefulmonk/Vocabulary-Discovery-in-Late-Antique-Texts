@@ -52,7 +52,9 @@ header-includes:
 
 # Introduction
 
-I present this workflow first by identifying the use cases for it and outlining the goals this presentation hopes to achieve and those it does not. A conceptual overview follows, with the aim of providing just enough background knowledge to use the workflow. I present the workflow in overview and interactively demonstrate its core steps. I conclude by highlighting the workflow's limitations and imparting further resources that will enable interested attendees to experiment with the workflow themselves.
+This presentation concerns a workflow for discovering vocabulary in digitized late antique texts. I present this workflow first by identifying the use cases for it and outlining the goals this presentation hopes to achieve and those it does not. A conceptual overview follows, with the aim of providing just enough background knowledge to use the workflow. I present the workflow in overview and interactively demonstrate its core steps. I conclude by highlighting the workflow's limitations and imparting further resources that will enable interested attendees to experiment with the workflow themselves.
+
+The examples concern the author's area of expertise: which is the corpus of the fourth century poet and theologian, Ephrem the Syrian. Most of Ephrem's works were critically edited in the previous century by Edmund Beck, for which he also provided high quality German translations.[@brock2025. See in particular "St. Ephrem: A Brief Guide to the Main Editions and Translations."] The demonstrations in this talk will use these German translations. But the methods presented here can apply to any digitized text in LTR unicode script.
 
 # Use Cases
 
