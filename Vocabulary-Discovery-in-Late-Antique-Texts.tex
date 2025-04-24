@@ -403,35 +403,47 @@ directory as \VERB|\NormalTok{repaginate.tex}|. We then make any
 necessary changes to the \VERB|\NormalTok{repaginate.tex}| file.
 
 If the original file is Beck's translation of the \emph{Hymns on the
-Church} with the filename \VERB|\NormalTok{beck\_1960.pdf}|, then we
-first examine the scan to determine the absolute page numbers of each
-section requiring distinct pagination:
+Nativity} with the filename
+\VERB|\NormalTok{hdn{-}ocr{-}optimized.pdf}|, then we first examine the
+scan to determine the absolute page numbers of each section requiring
+distinct pagination:
 
 \begin{itemize}
 \tightlist
 \item
-  1-6 should be numbered i-vi
+  1-14 should be numbered i-xiv
 \item
-  7-end should be numbered 7-146
+  15-end should be numbered 15-226
 \end{itemize}
 
 In \VERB|\NormalTok{repaginate.tex}| we comment out lines 38-39 because
 we don't need any cover pages. Then, we change line 54 to include pages
-1-6, and the filename to \VERB|\NormalTok{sources/beck\_1960.pdf}|. We
-change line 57 to include the rest of the pages 7-end using the string
-\VERB|\NormalTok{7{-}}|. Once again we must update the filename to
-\VERB|\NormalTok{sources/beck\_1960.pdf}|. This will compile a new pdf
-with the specified pages, using the specified page labels.
+1-14, and the filename to
+\VERB|\NormalTok{sources/hdn{-}ocr{-}optimized.pdf}|. We change line 57
+to include the rest of the pages 15-end using the string
+\VERB|\NormalTok{15{-}}|. Once again we must update the filename to
+\VERB|\NormalTok{sources/hdn{-}ocr{-}optimized}|. This will compile a
+new pdf with the specified pages, using the specified page labels.
 
 The final compilation results from the following command:
 
+\begin{enumerate}
+\def\labelenumi{(\arabic{enumi})}
+\tightlist
+\item
+  \textbf{Repagination via lualatex}
+\end{enumerate}
+
 \begin{Shaded}
 \begin{Highlighting}[]
-\ExtensionTok{lualatex}\NormalTok{ repaginate.tex}
+\ExtensionTok{lualatex} \AttributeTok{{-}output{-}dir}\OperatorTok{=}\NormalTok{build repaginate.tex}
 \end{Highlighting}
 \end{Shaded}
 
-The result should be a pdf file with the correct page labels.
+The result should be a pdf file with the correct page labels.(For the
+purposes the demonstration, I will move the file to the \texttt{corpus}
+directory:
+\VERB|\FunctionTok{mv}\NormalTok{ repaginate.pdf ./corpus/HdN\textbackslash{} German.pdf}|)
 
 At this point the file is ready to use for searches. One can build up
 several such pdfs in the same way, place them in a single directory, and
@@ -460,6 +472,7 @@ they can be put together into a single pipeline.
 
 \begin{enumerate}
 \def\labelenumi{(\arabic{enumi})}
+\setcounter{enumi}{1}
 \tightlist
 \item
   \textbf{Getting a list of matches from a single text}
@@ -480,7 +493,7 @@ output when there is only a single text being searched.
 
 \begin{enumerate}
 \def\labelenumi{(\arabic{enumi})}
-\setcounter{enumi}{1}
+\setcounter{enumi}{2}
 \tightlist
 \item
   \textbf{Counting the number of matches}
@@ -497,7 +510,7 @@ characters.
 
 \begin{enumerate}
 \def\labelenumi{(\arabic{enumi})}
-\setcounter{enumi}{2}
+\setcounter{enumi}{3}
 \tightlist
 \item
   \textbf{Quickly eyeballing the number of matches across different
@@ -516,7 +529,7 @@ line count, HdE seems to use the language of treasure more frequently.
 
 \begin{enumerate}
 \def\labelenumi{(\arabic{enumi})}
-\setcounter{enumi}{3}
+\setcounter{enumi}{4}
 \tightlist
 \item
   \textbf{Dealing with lower quality OCR and spelling variation}
@@ -539,7 +552,7 @@ once.
 
 \begin{enumerate}
 \def\labelenumi{(\arabic{enumi})}
-\setcounter{enumi}{4}
+\setcounter{enumi}{5}
 \tightlist
 \item
   \textbf{Searching in multiple languages simultaneously}
@@ -563,7 +576,7 @@ not single characters, we group them using round parentheses.
 
 \begin{enumerate}
 \def\labelenumi{(\arabic{enumi})}
-\setcounter{enumi}{5}
+\setcounter{enumi}{6}
 \tightlist
 \item
   \textbf{Lookbehinds and pipelines when dealing with many false
@@ -615,7 +628,7 @@ when using the command in a pipeline to produce a report.
 
 \begin{enumerate}
 \def\labelenumi{(\arabic{enumi})}
-\setcounter{enumi}{6}
+\setcounter{enumi}{7}
 \tightlist
 \item
   \textbf{Modified Version}
@@ -643,7 +656,7 @@ redirection operator: \texttt{\textgreater{}}.\footnote{Chet Ramey and
 
 \begin{enumerate}
 \def\labelenumi{(\arabic{enumi})}
-\setcounter{enumi}{7}
+\setcounter{enumi}{8}
 \tightlist
 \item
   \textbf{Redirection example}
@@ -704,7 +717,7 @@ Here is an example of the whole pipeline in action:
 
 \begin{enumerate}
 \def\labelenumi{(\arabic{enumi})}
-\setcounter{enumi}{8}
+\setcounter{enumi}{9}
 \tightlist
 \item
   \textbf{Report pipeline}

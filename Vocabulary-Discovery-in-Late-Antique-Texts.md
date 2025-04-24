@@ -123,20 +123,22 @@ We take for granted here that you already have one or more ocr'ed pdf files that
 
 We will use the accompanying file `repaginate.tex`{.markdown}. We start with the scanned pdf's that need repagination in the same directory as `repaginate.tex`{.markdown}. We then make any necessary changes to the `repaginate.tex`{.markdown} file. 
 
-If the original file is Beck's translation of the *Hymns on the Church* with the filename `beck_1960.pdf`{.markdown}, then we first examine the scan to determine the absolute page numbers of each section requiring distinct pagination:
+If the original file is Beck's translation of the *Hymns on the Nativity* with the filename `hdn-ocr-optimized.pdf`{.markdown}, then we first examine the scan to determine the absolute page numbers of each section requiring distinct pagination:
 
-- 1-6 should be numbered i-vi
-- 7-end should be numbered 7-146
+- 1-14 should be numbered i-xiv
+- 15-end should be numbered 15-226
 
-In `repaginate.tex`{.markdown} we comment out lines 38-39 because we don't need any cover pages. Then, we change line 54 to include pages 1-6, and the filename to `sources/beck_1960.pdf`{.markdown}. We change line 57 to include the rest of the pages 7-end using the string `7-`{.markdown}. Once again we must update the filename to `sources/beck_1960.pdf`{.markdown}. This will compile a new pdf with the specified pages, using the specified page labels.
+In `repaginate.tex`{.markdown} we comment out lines 38-39 because we don't need any cover pages. Then, we change line 54 to include pages 1-14, and the filename to `sources/hdn-ocr-optimized.pdf`{.markdown}. We change line 57 to include the rest of the pages 15-end using the string `15-`{.markdown}. Once again we must update the filename to `sources/hdn-ocr-optimized`{.markdown}. This will compile a new pdf with the specified pages, using the specified page labels.
 
 The final compilation results from the following command:
 
+(@Example) **Repagination via lualatex**
 ```bash
-lualatex repaginate.tex
+lualatex -output-dir=build repaginate.tex
 ```
 
-The result should be a pdf file with the correct page labels.
+The result should be a pdf file with the correct page labels.(For the purposes the demonstration, I will move the file to the `corpus` directory:
+ `mv repaginate.pdf ./corpus/HdN\ German.pdf`{.bash})
 
 At this point the file is ready to use for searches. One can build up several such pdfs in the same way, place them in a single directory, and search them all at once. For this demonstration we are also going to establish a file naming convention that will help produce a useful report at the end. The convention is convenient, but arbitrary, and is necessary only if you want to use my `awk`{.bash} script without modification. You are free to re-write it to follow some other convention. The included `awk`{.bash} script is designed to use pdfs with filenames that begin with an abbreviation designating the collection, followed by a space, followed by any other text. For example, if one has the *Hymns on the Church*, the *Hymns on Faith*, and the *Metrical Discourses on Faith*, the filenames for each would be: `HdE <whatever>.pdf`{.markdown} and `HdF <whatever>.pdf`{.markdown} and `SdF <whatever>.pdf`{.markdown}.
 
