@@ -39,6 +39,7 @@ header-includes:
     \setmonofont{PragmataPro Mono Liga}
     %\renewcommand{\footnote}[1]{\sidenote{#1}}
     %\renewcommand{\familydefault}{\sfdefault}
+    \fancyfoot[LEO]{\footnotesize © 2025 Andrew Hayes.This work (apart from any source code it contains) is licensed under CC BY 4.0. To view a copy of this license, visit https://creativecommons.org/licenses/by/4.0/. Source code is licensed under the MIT license.}
     ```
 ---
 
