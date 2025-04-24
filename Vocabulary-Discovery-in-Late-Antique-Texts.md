@@ -216,7 +216,7 @@ pdfgrep  -P '(?<![Zz]u )Ende(?! des [a-z])'
 
 By default, these commands simply print the information they produce to your screen, referred to as standard output: `stdout`. Once you've built up a number of small searches that can easily be recalled using your shell's history function, you may wish to save the results to a file so that you can use them in the future. The easiest way to do this is to simple redirect to output stream to a file, using a redirection operator: `>`.[@ramey2022, § 3.6.] For example:
 
-(@Example8)
+(@Example8) **Redirection example**
 ```bash
 pdfgrep -e '[Ss]ch[aä]tz' HdE\ German.pdf 
 -H --page-number=label > results.txt
