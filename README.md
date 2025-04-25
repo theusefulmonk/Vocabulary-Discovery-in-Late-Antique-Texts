@@ -3,6 +3,9 @@
 A workflow demonstration given at the Annual Meeting of the North
 American Patristics Society, May 22, 2025 in Chicago.
 
+(This repository has been made public in advance of the live event, so
+you may be viewing it before I've actually given the talk.)
+
 ## Purpose
 
 To understand the purpose and use-case of the talk, please consult the paper
