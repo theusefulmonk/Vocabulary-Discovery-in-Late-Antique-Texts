@@ -20,6 +20,7 @@ instructions for
 ├── .gitignore
 ├── LICENSE.md
 ├── Makefile
+├── README.md
 ├── Vocabulary-Discovery-in-Late-Antique-Texts.md
 ├── Vocabulary-Discovery-in-Late-Antique-Texts.tex
 ├── build
@@ -59,7 +60,7 @@ First `cd` into the directory you want to store the repository on your
 local machine, then run:
 
 ```
-git clone
+git clone https://github.com/theusefulmonk/Vocabulary-Discovery-in-Late-Antique-Texts.git
 ```
 
 # Installing tools

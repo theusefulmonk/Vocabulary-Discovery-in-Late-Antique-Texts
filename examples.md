@@ -52,7 +52,8 @@ header-includes:
 \fi
 
 The following are the code examples interactively demonstrated in the
-presentation. Each example follows the number that designates it.
+presentation. Each example follows the number that designates it. The
+repository is [available on GitHub](https://github.com/theusefulmonk/Vocabulary-Discovery-in-Late-Antique-Texts.git).
 
 (@) 
 ```bash
