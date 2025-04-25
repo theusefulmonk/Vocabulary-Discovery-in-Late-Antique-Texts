@@ -174,15 +174,15 @@ Command Line}
 
 \section{Introduction}\label{introduction}
 
-This presentation concerns a workflow for discovering vocabulary in
+This presentation introduces a workflow for discovering vocabulary in
 digitized late antique texts. I present this workflow first by
-identifying the use cases for it and outlining the goals this
+identifying the use-cases for it and outlining both the goals this
 presentation hopes to achieve and those it does not. A conceptual
 overview follows, with the aim of providing just enough background
-knowledge to use the workflow. I present the workflow in overview and
-interactively demonstrate its core steps. I conclude by highlighting the
-workflow's limitations and imparting further resources that will enable
-interested attendees to experiment with the workflow themselves.
+knowledge to use the workflow. I interactively demonstrate its core
+steps. I conclude by highlighting the workflow's limitations and
+offering suggestions to enable interested attendees to experiment with
+the workflow themselves.
 
 The examples concern the author's area of expertise: which is the corpus
 of the fourth century poet and theologian, Ephrem the Syrian. Most of
@@ -193,7 +193,8 @@ translations.\footnote{Sebastian Brock, {``Bibliographical Handouts by
   ``St.~Ephrem: A Brief Guide to the Main Editions and Translations.''}
 The demonstrations in this talk will use these German translations. But
 the methods presented here can apply to any digitized text in LTR
-unicode script.
+unicode script. Scans were made for personal use from purchased physical
+volumes.
 
 \section{Use Cases}\label{use-cases}
 
@@ -241,22 +242,10 @@ presented here. The following are four such cases:
   another application.
 \end{enumerate}
 
-The examples in this talk involve searching Ephrem the Syrian's corpus,
-mostly in the form of Edmund Beck's German translations, using scans
-made for personal use from purchased physical volumes. The tools and
-techniques are, however, applicable to any pdf containing LTR text in a
-Roman or Greek alphabet, or any such script supported by a terminal
-emulator.
-
 \section{Three Core Steps (Goals and
 Non-Goals)}\label{three-core-steps-goals-and-non-goals}
 
-These workflows are complex. It is impossible to describe all their
-parts fully within the scope of this presentation. Some of the parts
-omitted from the main discussion are identified and augmented in the
-Github repository with hints and suggestions for how one might best
-accomplish the task. Nevertheless, the main business of this talk is to
-discuss the three core steps in the workflow:
+The workflow contains the following core steps:
 
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}
@@ -268,6 +257,11 @@ discuss the three core steps in the workflow:
 \item
   Report
 \end{enumerate}
+
+Each of them is conducted at the command line of a UNIX system.
+Graphical user interface (GUI) tools have been purposely avoided,
+especially since the goal is to offer a cross-platform open source
+solution that consumes minimal system resources.
 
 \section{Background}\label{background}
 
@@ -290,14 +284,15 @@ some form of UNIX.
 
 UNIX OS's share a common structural feature: they consist of a kernel
 and a shell. A shell is a textual interface for users to the kernel of
-the OS. The shell is a command interpreter. It provides a prompt and a
-command language allowing the user to issue written commands to the
-kernel and to orchestrate the operation of many programs simultaneously.
-Although there are many different shells available to a user, most
-implement some substantial portion of the POSIX standard, which means
-that a user who learns one shell can usually apply that knowledge to any
-UNIX installation. The tools discussed in this presentation are as
-standard as possible and should be available for any UNIX system.
+the OS. More precisely, the shell is a command interpreter. It provides
+a prompt and a command language allowing the user to issue written
+commands to the kernel and to orchestrate the operation of many programs
+simultaneously. Although there are many different shells available to a
+user, most implement some substantial portion of the POSIX standard,
+which means that a user who learns one shell's commands can usually
+apply that knowledge to any UNIX installation. The tools discussed in
+this presentation should be available, if not pre-installed, for any
+UNIX system.
 
 On modern desktop and laptop computers with a window-based graphical
 user interface, the user accesses the shell through a terminal emulator
@@ -312,8 +307,8 @@ manipulating it at the command line using the tools
   \VERB|\ExtensionTok{xelatex}| will serve just as well.} Some
 information about how to install \VERB|\ExtensionTok{pdfgrep}| via
 common package managers and \VERB|\ExtensionTok{lualatex}| as part of a
-\TeX distribution is provided in the acommpanying repository. The tools
-\VERB|\FunctionTok{grep}| and \VERB|\FunctionTok{awk}| are already
+\TeX{} distribution is provided in the acommpanying repository. The
+tools \VERB|\FunctionTok{grep}| and \VERB|\FunctionTok{awk}| are already
 included in any POSIX compliant environment. Any standard shell may be
 used. My examples will use \VERB|\FunctionTok{zsh}|, the default in
 MacOS.
@@ -326,18 +321,18 @@ commands like water flows through a pipe.
 \subsection{Key Concepts: PDF Page Labels and Regular
 Expressions}\label{key-concepts-pdf-page-labels-and-regular-expressions}
 
-The heart of this workflow turns on two key concepts: pdf page labels
-and regular expressions. Such regexes, as they are called will not
-receive their own tutorial here, but simple examples in the
-demonstration portion will illustrate how they are used. Resources for
-further study are available in the associated github repository. In
-essence, a regex is a plain text string that represents a pattern. A
-regex engine evaluates that string and finds all the strings in the
-source document that match the pattern. As originally conceived, regexes
-are used by a tool such as \VERB|\FunctionTok{grep}| to search one or
-more plain text files. The tool \VERB|\ExtensionTok{pdfgrep}| is a free
-and open-source variant of \VERB|\FunctionTok{grep}| that makes it
-possible to search a pdf file. Like \VERB|\FunctionTok{grep}| the
+This workflow turns on two key concepts: pdf page labels and regular
+expressions. Such regexes are too complicated to receive a full tutorial
+in this presentation, but simple examples in the demonstration portion
+will illustrate how they are used. Resources for further study are
+available in the associated github repository. In essence, a regex is a
+plain text string that represents a pattern. A regex engine evaluates
+that string and finds all the strings in the source document that match
+the pattern. As originally conceived, regexes are used by a tool such as
+\VERB|\FunctionTok{grep}| to search one or more plain text files. The
+tool \VERB|\ExtensionTok{pdfgrep}| is a free and open-source variant of
+\VERB|\FunctionTok{grep}| that makes it possible to search one or more
+pdf files. Like \VERB|\FunctionTok{grep}| the
 \VERB|\ExtensionTok{pdfgrep}| tool is given a regex and one or more
 source files and outputs all the matches, along with useful context for
 the match: for instance, the filename of the source file in which the
@@ -362,14 +357,14 @@ files.''\footnote{PDF Association, {``Glossary of PDF Terms''}
 are useful for working with a digital version in concert with its
 printed \emph{Vorlage}.
 
-Correspondence to the printed original is key to this workflow. If the
-labels of the scanned pdf correspond correctly to the printed original,
-the list of matches produced by \VERB|\ExtensionTok{pdfgrep}| can easily
-be looked up in either the digital or printed version. Moreover, PDF
-viewer software typically provides a keyboard shortcut to jump directly
-to a specified page label, a feature that is important when scanned
-files run to hundreds of pages and lack other forms of navigable
-structure.
+Correspondence to the printed original is what makes
+\VERB|\ExtensionTok{pdfgrep}| searches useful. If the labels of the
+scanned pdf correspond correctly to the printed original, the list of
+matches produced by \VERB|\ExtensionTok{pdfgrep}| can easily be looked
+up in either the digital or printed version. Moreover, PDF viewer
+software typically provides a keyboard shortcut to jump directly to a
+specified page label, a feature that is important when scanned files run
+to hundreds of pages and lack other forms of navigable structure.
 
 Unfortunately, a dumb scan of the printed original needs the page labels
 added, and most free viewers provide limited functionality, or none at
@@ -406,8 +401,8 @@ that meet the following requirements:
 
 \subsection{Phase 1: Repaginate}\label{phase-1-repaginate}
 
-We will use the accompanying file \VERB|\NormalTok{repaginate.tex}|. We
-start with the scanned pdfs that need repagination in a dedicated
+We will use the accompanying file \VERB|\NormalTok{repaginate.tex}|.
+Scanned pdfs that need repagination are placed in a dedicated
 \texttt{sources} directory. We then make any necessary changes to the
 \VERB|\NormalTok{repaginate.tex}| file and typeset it.
 
@@ -457,16 +452,16 @@ directory:
 At this point the file is ready to use for searches. One can build up
 several such pdfs in the same way, place them in a single directory, and
 search them all at once. For this demonstration we are also going to
-establish a file naming convention that will help produce a useful
-report at the end. The convention is convenient, but arbitrary, and is
-necessary only if you want to use my \VERB|\FunctionTok{awk}| script
-without modification. You are free to re-write it to follow some other
-convention. The included \VERB|\FunctionTok{awk}| script is designed to
-use pdfs with filenames that begin with an abbreviation designating the
-collection, followed by a space, followed by any other text. For
-example, if one has the \emph{Hymns on the Church}, the \emph{Hymns on
-Faith}, and the \emph{Metrical Discourses on Faith}, the filenames for
-each would be:
+establish a file naming convention that makes it easy to produce a
+useful report at the end. The convention is convenient, but arbitrary,
+and is necessary only if you want to use my \VERB|\FunctionTok{awk}|
+script without modification. You are free to re-write it to follow some
+other convention. The included \VERB|\FunctionTok{awk}| script is
+designed to use pdfs with filenames that begin with an abbreviation
+designating the collection, followed by a space, followed by any other
+text. For example, if one has the \emph{Hymns on the Church}, the
+\emph{Hymns on Faith}, and the \emph{Metrical Discourses on Faith}, the
+filenames for each would be:
 \VERB|\NormalTok{HdE }\DataTypeTok{\textless{}}\KeywordTok{whatever}\DataTypeTok{\textgreater{}}\NormalTok{.pdf}|
 and
 \VERB|\NormalTok{HdF }\DataTypeTok{\textless{}}\KeywordTok{whatever}\DataTypeTok{\textgreater{}}\NormalTok{.pdf}|
@@ -533,8 +528,9 @@ characters.
 \end{Shaded}
 
 The \texttt{-c} flag is used to count the number of matches, per file.
-The result shows that although the HdV and the HdE are comparable in
-line count, HdE seems to use the language of treasure more frequently.
+The result shows that although the \emph{HdV} and the \emph{HdE} are
+comparable in line count, \emph{HdE} seems to use the language of
+treasure more frequently.
 
 \begin{enumerate}
 \def\labelenumi{(\arabic{enumi})}
@@ -614,15 +610,14 @@ feature of basic or extended regular expressions.\footnote{{``Advanced
   (\url{https://caspar.bgsu.edu/~courses/Stats/Labs/Handouts/grepadvanced.htm},
   2023); Michael Fitzgerald, \emph{Introducing Regular Expressions}
   (Sebastapol, California: {``O'Reilly Media, Inc.''} 2012), 78.} Thus
-we must invoke \VERB|\ExtensionTok{pdfgrep}| with perl compatible
-regular expressions, a more sophisticated tool. We invoke it via the
-\texttt{-P} flag. The negative lookbehind itself is
-\texttt{(?\textless{}!\ .\ .\ .)} and the negative lookahead is
-\texttt{(?!\ .\ .\ .)}. This excludes matches in which the word
+we must use perl compatible regular expressions, a more sophisticated
+tool. We invoke them via the \texttt{-P} flag. The negative lookbehind
+itself is \texttt{(?\textless{}!\ .\ .\ .)} and the negative lookahead
+is \texttt{(?!\ .\ .\ .)}. This excludes matches in which the word
 \emph{Ende} is preceded or followed by the most common patterns we wish
 to exclude.
 
-But there's still a problem. OCR'ed texts often have inconsistent
+A problem remains, however. OCR'ed texts often have inconsistent
 whitespace between words, and thus there are still some passages in
 which the undesired matches are included due to variable whitespace.
 Lookbehinds and Lookaheads require fixed length strings, so we cannot
@@ -654,8 +649,8 @@ when using the command in a pipeline to produce a report.
 \subsection{Phase 3: Report}\label{phase-3-report}
 
 By default, these commands simply print the information they produce to
-your screen, referred to as standard output: \texttt{stdout}. Once
-you've built up a number of small searches that can easily be recalled
+the screen, referred to as standard output: \texttt{stdout}. Once you
+have built up a number of small searches that can easily be recalled
 using your shell's history function, you may wish to save the results to
 a file so that you can use them in the future. The easiest way to do
 this is to simple redirect to output stream to a file, using a

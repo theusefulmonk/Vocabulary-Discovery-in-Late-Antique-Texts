@@ -55,9 +55,9 @@ header-includes:
 
 # Introduction
 
-This presentation concerns a workflow for discovering vocabulary in digitized late antique texts. I present this workflow first by identifying the use cases for it and outlining the goals this presentation hopes to achieve and those it does not. A conceptual overview follows, with the aim of providing just enough background knowledge to use the workflow. I present the workflow in overview and interactively demonstrate its core steps. I conclude by highlighting the workflow's limitations and imparting further resources that will enable interested attendees to experiment with the workflow themselves.
+This presentation introduces a workflow for discovering vocabulary in digitized late antique texts. I present this workflow first by identifying the use-cases for it and outlining both the goals this presentation hopes to achieve and those it does not. A conceptual overview follows, with the aim of providing just enough background knowledge to use the workflow. I interactively demonstrate its core steps. I conclude by highlighting the workflow's limitations and offering suggestions to enable interested attendees to experiment with the workflow themselves.
 
-The examples concern the author's area of expertise: which is the corpus of the fourth century poet and theologian, Ephrem the Syrian. Most of Ephrem's works were critically edited in the previous century by Edmund Beck, for which he also provided high quality German translations.[@brock2025. See in particular "St. Ephrem: A Brief Guide to the Main Editions and Translations."] The demonstrations in this talk will use these German translations. But the methods presented here can apply to any digitized text in LTR unicode script.
+The examples concern the author's area of expertise: which is the corpus of the fourth century poet and theologian, Ephrem the Syrian. Most of Ephrem's works were critically edited in the previous century by Edmund Beck, for which he also provided high quality German translations.[@brock2025. See in particular "St. Ephrem: A Brief Guide to the Main Editions and Translations."] The demonstrations in this talk will use these German translations. But the methods presented here can apply to any digitized text in LTR unicode script. Scans were made for personal use from purchased physical volumes.
 
 # Use Cases
 
@@ -72,15 +72,15 @@ Note that even when a native digital search tool is available, it is sometimes c
 3. One wants to automate or script complex queries for reproducibility and convenience.
 4. One wants to produce a customized report of search results for use in another application.
 
-The examples in this talk involve searching  Ephrem the Syrian's corpus, mostly in the form of Edmund Beck's German translations, using scans made for personal use from purchased physical volumes. The tools and techniques are, however, applicable to any pdf containing LTR text in a Roman or Greek alphabet, or any such script supported by a terminal emulator. 
-
 # Three Core Steps (Goals and Non-Goals)
 
-These workflows are complex. It is impossible to describe all their parts fully within the scope of this presentation. Some of the parts omitted from the main discussion are identified and augmented in the Github repository with hints and suggestions for how one might best accomplish the task. Nevertheless, the main business of this talk is to discuss the three core steps in the workflow:
+The workflow contains the following core steps:
 
 1. Repaginate
 2. Explore
 3. Report
+
+Each of them is conducted at the command line of a UNIX system. Graphical user interface (GUI) tools have been purposely avoided, especially since the goal is to offer a cross-platform open source solution that consumes minimal system resources.
 
 # Background
 
@@ -88,19 +88,19 @@ These workflows are complex. It is impossible to describe all their parts fully 
 
 UNIX is a family of operating systems descended from an operating system developed at Bell Labs in the 1970s.[@kernighan1984, p. vii.] Its original headline feature was the ability to provide robust multi-user support in a way that clearly delineated user ownership of files to prevent conflicts.[@kernighan1984, p. 1.] It eventually became a kind of standard: POSIX, the Portable Operating System Interface.[@robbins2005, pp. 1-7.] Today, MacOS and various forms of Linux and BSD are the most commonly used UNIXes. They form the backbone of the internet. Most servers run some form of UNIX. 
 
-UNIX OS's share a common structural feature: they consist of a kernel and a shell. A shell is a textual interface for users to the kernel of the OS. The shell is a command interpreter. It provides a prompt and a command language allowing the user to issue written commands to the kernel and to orchestrate the operation of many programs simultaneously. Although there are many different shells available to a user, most implement some substantial portion of the POSIX standard, which means that a user who learns one shell can usually apply that knowledge to any UNIX installation. The tools discussed in this presentation are as standard as possible and should be available for any UNIX system.
+UNIX OS's share a common structural feature: they consist of a kernel and a shell. A shell is a textual interface for users to the kernel of the OS. More precisely, the shell is a command interpreter. It provides a prompt and a command language allowing the user to issue written commands to the kernel and to orchestrate the operation of many programs simultaneously. Although there are many different shells available to a user, most implement some substantial portion of the POSIX standard, which means that a user who learns one shell's commands can usually apply that knowledge to any UNIX installation. The tools discussed in this presentation should be available, if not pre-installed, for any UNIX system.
 
-On modern desktop and laptop computers with a window-based graphical user interface, the user accesses the shell through a terminal emulator program, which provides a place in which to issue commands via the shell and to receive output from those commands. Commands are issued to the shell as lines of plain text. This constitutes the Command Line Interface (CLI). We will be extracting information from pdf files and manipulating it at the command line using the tools `pdfgrep`{.bash}, `grep`{.bash}, `awk`{.bash}, and `lualatex`{.bash}.^[Other forms of \LaTeX, such as `pdflatex`{.bash} and `xelatex`{.bash} will serve just as well.] Some information about how to install `pdfgrep`{.bash} via common package managers and `lualatex`{.bash} as part of a \TeX distribution is provided in the acommpanying repository. The tools `grep`{.bash} and `awk`{.bash} are already included in any POSIX compliant environment. Any standard shell may be used. My examples will use `zsh`{.bash}, the default in MacOS.
+On modern desktop and laptop computers with a window-based graphical user interface, the user accesses the shell through a terminal emulator program, which provides a place in which to issue commands via the shell and to receive output from those commands. Commands are issued to the shell as lines of plain text. This constitutes the Command Line Interface (CLI). We will be extracting information from pdf files and manipulating it at the command line using the tools `pdfgrep`{.bash}, `grep`{.bash}, `awk`{.bash}, and `lualatex`{.bash}.^[Other forms of \LaTeX, such as `pdflatex`{.bash} and `xelatex`{.bash} will serve just as well.] Some information about how to install `pdfgrep`{.bash} via common package managers and `lualatex`{.bash} as part of a \TeX{} distribution is provided in the acommpanying repository. The tools `grep`{.bash} and `awk`{.bash} are already included in any POSIX compliant environment. Any standard shell may be used. My examples will use `zsh`{.bash}, the default in MacOS.
 
 One important feature of UNIX tools is their composability. They can be chained together into a pipeline to achieve a series of transformations producing the desired result. Textual information flows through UNIX commands like water flows through a pipe.
 
 ## Key Concepts: PDF Page Labels and Regular Expressions
 
-The heart of this workflow turns on two key concepts: pdf page labels and regular expressions. Such regexes, as they are called will not receive their own tutorial here, but simple examples in the demonstration portion will illustrate how they are used. Resources for further study are available in the associated github repository. In essence, a regex is a plain text string that represents a pattern. A regex engine evaluates that string and finds all the strings in the source document that match the pattern. As originally conceived, regexes are used by a tool such as `grep`{.bash} to search one or more plain text files. The tool `pdfgrep`{.bash} is a free and open-source variant of `grep`{.bash} that makes it possible to search a pdf file. Like `grep`{.bash} the `pdfgrep`{.bash} tool is given a regex and one or more source files and outputs all the matches, along with useful context for the match: for instance, the filename of the source file in which the match occurs and the pdf page label of the page on which the match occurs. 
+This workflow turns on two key concepts: pdf page labels and regular expressions. Such regexes are too complicated to receive a full tutorial in this presentation, but simple examples in the demonstration portion will illustrate how they are used. Resources for further study are available in the associated github repository. In essence, a regex is a plain text string that represents a pattern. A regex engine evaluates that string and finds all the strings in the source document that match the pattern. As originally conceived, regexes are used by a tool such as `grep`{.bash} to search one or more plain text files. The tool `pdfgrep`{.bash} is a free and open-source variant of `grep`{.bash} that makes it possible to search one or more pdf files. Like `grep`{.bash} the `pdfgrep`{.bash} tool is given a regex and one or more source files and outputs all the matches, along with useful context for the match: for instance, the filename of the source file in which the match occurs and the pdf page label of the page on which the match occurs. 
 
 Page labels are a form of metadata in a pdf file that are displayed by most pdf viewing software, such as MacOS `Preview.app`{.bash} or KDE `Okular`{.bash}. They usually indicate a digital text's logical page number corresponding to its printed original. As in a printed text, cover pages, frontmatter, body, and backmatter can have distinct pagination. Thus, frontmatter might be paginated with lowercase roman numerals, while the body might have arabic numerals. As a result, a given page might, in absolute terms, be the seventh page in a pdf document, but be labeled with the number 2 because it has been preceded by a cover page and pages i-iv of frontmatter. The PDF Association describes these labels as "an optional descriptive label of a page that is commonly presented on-screen. This is in contrast to the integer page index used internally in PDF files."[@pdfassociation2025] Such labels are useful for working with a digital version in concert with its printed *Vorlage*. 
 
-Correspondence to the printed original is key to this workflow. If the labels of the scanned pdf correspond correctly to the printed original, the list of matches produced by `pdfgrep`{.bash} can easily be looked up in either the digital or printed version. Moreover, PDF viewer software typically provides a keyboard shortcut to jump directly to a specified page label, a feature that is important when scanned files run to hundreds of pages and lack other forms of navigable structure.
+Correspondence to the printed original is what makes `pdfgrep`{.bash} searches useful. If the labels of the scanned pdf correspond correctly to the printed original, the list of matches produced by `pdfgrep`{.bash} can easily be looked up in either the digital or printed version. Moreover, PDF viewer software typically provides a keyboard shortcut to jump directly to a specified page label, a feature that is important when scanned files run to hundreds of pages and lack other forms of navigable structure.
 
 Unfortunately, a dumb scan of the printed original needs the page labels added, and most free viewers provide limited functionality, or none at all, for editing page label metadata or page order. Hence the first step in the workflow is to repaginate using \LaTeX. We turn now to the workflow.
 
@@ -125,7 +125,7 @@ I take for granted that you already have one or more ocr'ed pdf files that meet 
 
 ## Phase 1: Repaginate
 
-We will use the accompanying file `repaginate.tex`{.markdown}. We start with the scanned pdfs that need repagination in a dedicated `sources` directory. We then make any necessary changes to the `repaginate.tex`{.markdown} file and typeset it.
+We will use the accompanying file `repaginate.tex`{.markdown}. Scanned pdfs that need repagination are placed in a dedicated `sources` directory. We then make any necessary changes to the `repaginate.tex`{.markdown} file and typeset it.
 
 In our example, the original file is Beck's translation of the *Hymns on the Nativity* with the filename `hdn-ocr-optimized.pdf`{.markdown}. We first examine the scan to determine the absolute page numbers of each section requiring distinct pagination:
 
@@ -144,7 +144,7 @@ lualatex -output-dir=build repaginate.tex
 The result should be a pdf file with the correct page labels.(For the purposes the demonstration, I will move the file to the `corpus` directory:
  `mv repaginate.pdf ./corpus/HdN\ German.pdf`{.bash})
 
-At this point the file is ready to use for searches. One can build up several such pdfs in the same way, place them in a single directory, and search them all at once. For this demonstration we are also going to establish a file naming convention that will help produce a useful report at the end. The convention is convenient, but arbitrary, and is necessary only if you want to use my `awk`{.bash} script without modification. You are free to re-write it to follow some other convention. The included `awk`{.bash} script is designed to use pdfs with filenames that begin with an abbreviation designating the collection, followed by a space, followed by any other text. For example, if one has the *Hymns on the Church*, the *Hymns on Faith*, and the *Metrical Discourses on Faith*, the filenames for each would be: `HdE <whatever>.pdf`{.markdown} and `HdF <whatever>.pdf`{.markdown} and `SdF <whatever>.pdf`{.markdown}.
+At this point the file is ready to use for searches. One can build up several such pdfs in the same way, place them in a single directory, and search them all at once. For this demonstration we are also going to establish a file naming convention that makes it easy to produce a useful report at the end. The convention is convenient, but arbitrary, and is necessary only if you want to use my `awk`{.bash} script without modification. You are free to re-write it to follow some other convention. The included `awk`{.bash} script is designed to use pdfs with filenames that begin with an abbreviation designating the collection, followed by a space, followed by any other text. For example, if one has the *Hymns on the Church*, the *Hymns on Faith*, and the *Metrical Discourses on Faith*, the filenames for each would be: `HdE <whatever>.pdf`{.markdown} and `HdF <whatever>.pdf`{.markdown} and `SdF <whatever>.pdf`{.markdown}.
 
 ## Phase 2: Explore
 
@@ -174,7 +174,7 @@ Character classes inside the square brackets will match any of those characters.
  pdfgrep -e '[Ss]ch[aä]tz' HdE\ German.pdf HdV\ German.pdf -c
 ```
 
-The `-c` flag is used to count the number of matches, per file. The result shows that although the HdV and the HdE are comparable in line count, HdE seems to use the language of treasure more frequently. 
+The `-c` flag is used to count the number of matches, per file. The result shows that although the *HdV* and the *HdE* are comparable in line count, *HdE* seems to use the language of treasure more frequently. 
 
 (@Example4) **Dealing with lower quality OCR and spelling variation**
 
@@ -204,9 +204,9 @@ pdfgrep  -P '(?<![Zz]u )Ende(?! des [a-z])'
 
 In this example, we find instances of the word *Ende* but which are not preceded by the word *Zu*, because the phrase *Zu Ende* is very common. It is Beck's usual translation of *šlem*, a scribal note in the mss. typical at the end of a *madrāšâ* or collection of *madrāšê*. Being a scribal note, it is of no interest for understanding Ephrem's word usage, so we exclude it in the present inquiry.
 
-Doing this requires the use of a negative lookbehind, which is not a feature of basic or extended regular expressions.[@grep2023b; @fitzgerald2012, p. 78.] Thus we must invoke `pdfgrep`{.bash} with perl compatible regular expressions, a more sophisticated tool. We invoke it via the `-P` flag. The negative lookbehind itself is `(?<! . . .)` and the negative lookahead is `(?! . . .)`. This excludes matches in which the word *Ende* is preceded or followed by the most common patterns we wish to exclude.
+Doing this requires the use of a negative lookbehind, which is not a feature of basic or extended regular expressions.[@grep2023b; @fitzgerald2012, p. 78.] Thus we must use perl compatible regular expressions, a more sophisticated tool. We invoke them via the `-P` flag. The negative lookbehind itself is `(?<! . . .)` and the negative lookahead is `(?! . . .)`. This excludes matches in which the word *Ende* is preceded or followed by the most common patterns we wish to exclude.
 
-But there's still a problem. OCR'ed texts often have inconsistent whitespace between words, and thus there are still some passages in which the undesired matches are included due to variable whitespace. Lookbehinds and Lookaheads require fixed length strings, so we cannot account for the variability that way. Thus we pipe the results into a second invocation of `grep` to filter out any instances of *Zu* remaining. The inversion flag `-v` accomplishes this nicely. The result is not perfect, but it excludes a sufficient number of false positives that any remaining ones can be discovered manually.
+A problem remains, however. OCR'ed texts often have inconsistent whitespace between words, and thus there are still some passages in which the undesired matches are included due to variable whitespace. Lookbehinds and Lookaheads require fixed length strings, so we cannot account for the variability that way. Thus we pipe the results into a second invocation of `grep` to filter out any instances of *Zu* remaining. The inversion flag `-v` accomplishes this nicely. The result is not perfect, but it excludes a sufficient number of false positives that any remaining ones can be discovered manually.
 
 Here's a version that omits the `-C` flag, which is not useful when using the command in a pipeline to produce a report.
 
@@ -220,7 +220,7 @@ pdfgrep  -P '(?<![Zz]u )Ende(?! des [a-z])'
 
 ## Phase 3: Report
 
-By default, these commands simply print the information they produce to your screen, referred to as standard output: `stdout`. Once you've built up a number of small searches that can easily be recalled using your shell's history function, you may wish to save the results to a file so that you can use them in the future. The easiest way to do this is to simple redirect to output stream to a file, using a redirection operator: `>`.[@ramey2022, § 3.6.] For example:
+By default, these commands simply print the information they produce to the screen, referred to as standard output: `stdout`. Once you have built up a number of small searches that can easily be recalled using your shell's history function, you may wish to save the results to a file so that you can use them in the future. The easiest way to do this is to simple redirect to output stream to a file, using a redirection operator: `>`.[@ramey2022, § 3.6.] For example:
 
 (@Example8) **Redirection example**
 ```bash
