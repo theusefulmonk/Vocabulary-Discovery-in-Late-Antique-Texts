@@ -6,7 +6,7 @@
 .DS_Store
 *.pygtex
 *.pygstyle
-/build
-!/build/Vocabulary-Discovery-in-Late-Antique-Texts.pdf
+/build/*
+!Vocabulary-Discovery-in-Late-Antique-Texts.pdf
 /sources
 repaginate.txt
