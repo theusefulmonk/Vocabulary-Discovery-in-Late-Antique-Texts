@@ -1,0 +1,299 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\PassOptionsToPackage{dvipsnames,svgnames,x11names}{xcolor}
+%
+\documentclass[
+  letterpaper,
+]{tufte-handout}
+\usepackage{amsmath,amssymb}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\usepackage{listings}
+\newcommand{\passthrough}[1]{#1}
+\lstset{defaultdialect=[5.3]Lua}
+\lstset{defaultdialect=[x86masm]Assembler}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{255,255,255}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.75,0.01,0.01}{\textbf{\colorbox[rgb]{0.97,0.90,0.90}{#1}}}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.79,0.38,0.79}{#1}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.00,0.34,0.68}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.69,0.50,0.00}{#1}}
+\newcommand{\BuiltInTok}[1]{\textcolor[rgb]{0.39,0.29,0.61}{\textbf{#1}}}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.57,0.30,0.62}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.54,0.53,0.53}{#1}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.00,0.58,1.00}{#1}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.67,0.33,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.12,0.11,0.11}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.00,0.34,0.68}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.69,0.50,0.00}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.38,0.47,0.50}{#1}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.75,0.01,0.01}{\underline{#1}}}
+\newcommand{\ExtensionTok}[1]{\textcolor[rgb]{0.00,0.58,1.00}{\textbf{#1}}}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.69,0.50,0.00}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.39,0.29,0.61}{#1}}
+\newcommand{\ImportTok}[1]{\textcolor[rgb]{1.00,0.33,0.00}{#1}}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.69,0.50,0.00}{#1}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.12,0.11,0.11}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{\textcolor[rgb]{0.12,0.11,0.11}{#1}}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.12,0.11,0.11}{#1}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.43,0.16}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.00,0.43,0.16}{#1}}
+\newcommand{\RegionMarkerTok}[1]{\textcolor[rgb]{0.00,0.34,0.68}{\colorbox[rgb]{0.88,0.91,0.97}{#1}}}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.24,0.68,0.91}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{1.00,0.33,0.00}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.75,0.01,0.01}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.34,0.68}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.75,0.01,0.01}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.75,0.01,0.01}{#1}}
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+%\usepackage[svgnames]{xcolor}
+%\definecolor{codebackground}{RGB}{240, 240, 235}
+%\definecolor{codebackground}{RGB}{117, 128, 124}
+%\AtBeginDocument{\colorlet{defaultcolor}{.}}
+%\definecolor{bg}{HTML}{282828} % from https://github.com/kevinsawicki/monokai
+%\usepackage[outputdir=build]{minted}
+%\setminted{style=monokai,bgcolor=bg}
+%\setmintedinline{style=monokai,bgcolor=None}
+%\definecolor{Text}{HTML}{F8F8F2}
+%\AddToHook{cmd/mintinline/before}{\color{Text}}
+%\AddToHook{cmd/mintinline/after}{}
+    %\AtBeginEnvironment{minted}{\color{Text}}
+\usepackage{pgfornament}
+\usepackage{setspace}
+\usepackage{microtype}
+\usepackage{fontspec}
+    \defaultfontfeatures{Numbers=OldStyle}
+    \setmainfont{STIX Two Text}
+\setmonofont{PragmataPro Mono Liga}
+%\renewcommand{\footnote}[1]{\sidenote{#1}}
+%\renewcommand{\familydefault}{\sfdefault}
+\fancyfoot[LEO]{\footnotesize © 2025 Andrew Hayes.This work (apart from any source code it contains) is licensed under CC BY 4.0. To view a copy of this license, visit https://creativecommons.org/licenses/by/4.0/.}
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+\usepackage{bookmark}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  pdftitle={Efficient Vocabulary Discovery in Late Antique Texts--Code Examples},
+  pdfauthor={Andrew J. Hayes},
+  colorlinks=true,
+  linkcolor={teal},
+  filecolor={Maroon},
+  citecolor={Blue},
+  urlcolor={blue},
+  pdfcreator={LaTeX via pandoc}}
+
+\title{Efficient Vocabulary Discovery in Late Antique Texts--Code
+Examples}
+\author{Andrew J. Hayes}
+\date{May 22, 2025}
+
+\begin{document}
+\maketitle
+
+\ifdefined\soulregister
+
+\soulregister\MakeTextUppercase{1} \soulregister\MakeTextLowercase{1}
+\soulregister\newlinetospace{1} \fi
+
+The following are the code examples interactively demonstrated in the
+presentation. Each example follows the number that designates it.
+
+\begin{enumerate}
+\def\labelenumi{(\arabic{enumi})}
+\tightlist
+\item
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{lualatex} \AttributeTok{{-}output{-}dir}\OperatorTok{=}\NormalTok{build repaginate.tex}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{enumerate}
+\def\labelenumi{(\arabic{enumi})}
+\setcounter{enumi}{1}
+\tightlist
+\item
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{pdfgrep} \AttributeTok{{-}e} \StringTok{\textquotesingle{}[Ss]ch[aä]tz\textquotesingle{}}\NormalTok{ HdE}\DataTypeTok{\textbackslash{} }\NormalTok{German.pdf }\AttributeTok{{-}H} \AttributeTok{{-}{-}page{-}number}\OperatorTok{=}\NormalTok{label}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{enumerate}
+\def\labelenumi{(\arabic{enumi})}
+\setcounter{enumi}{2}
+\tightlist
+\item
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{pdfgrep} \AttributeTok{{-}e} \StringTok{\textquotesingle{}[Ss]ch[aä]tz\textquotesingle{}}\NormalTok{ HdE}\DataTypeTok{\textbackslash{} }\NormalTok{German.pdf }\AttributeTok{{-}H} \AttributeTok{{-}c}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{enumerate}
+\def\labelenumi{(\arabic{enumi})}
+\setcounter{enumi}{3}
+\tightlist
+\item
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+ \ExtensionTok{pdfgrep} \AttributeTok{{-}e} \StringTok{\textquotesingle{}[Ss]ch[aä]tz\textquotesingle{}}\NormalTok{ HdE}\DataTypeTok{\textbackslash{} }\NormalTok{German.pdf HdV}\DataTypeTok{\textbackslash{} }\NormalTok{German.pdf }\AttributeTok{{-}c}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{enumerate}
+\def\labelenumi{(\arabic{enumi})}
+\setcounter{enumi}{4}
+\tightlist
+\item
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+ \ExtensionTok{pdfgrep} \PreprocessorTok{*}\NormalTok{.pdf }\AttributeTok{{-}e} \StringTok{\textquotesingle{}G[aei]hen(n)?a\textquotesingle{}} \AttributeTok{{-}{-}page{-}number}\OperatorTok{=}\NormalTok{label }\AttributeTok{{-}H}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{enumerate}
+\def\labelenumi{(\arabic{enumi})}
+\setcounter{enumi}{5}
+\tightlist
+\item
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{pdfgrep} \AttributeTok{{-}i} \AttributeTok{{-}e} \StringTok{\textquotesingle{}([Kk]ingdom)|(Königtum)|(\textbackslash{}(Himmel\textbackslash{})[Rr]eich)\textquotesingle{}} \AttributeTok{{-}{-}page{-}number}\OperatorTok{=}\NormalTok{label }\AttributeTok{{-}H} \PreprocessorTok{*}\NormalTok{.pdf}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{enumerate}
+\def\labelenumi{(\arabic{enumi})}
+\setcounter{enumi}{6}
+\tightlist
+\item
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{pdfgrep}  \AttributeTok{{-}P} \StringTok{\textquotesingle{}(?\textless{}![Zz]u )Ende(?! des [a{-}z])\textquotesingle{}} 
+\ExtensionTok{{-}{-}page{-}number=label} \AttributeTok{{-}H} \AttributeTok{{-}C}\NormalTok{ 3 }
+\ExtensionTok{{-}{-}color=always} \PreprocessorTok{*}\NormalTok{.pdf }\KeywordTok{|} \FunctionTok{grep} \AttributeTok{{-}v} \AttributeTok{{-}e} \StringTok{\textquotesingle{}[Zz]u\textquotesingle{}}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{enumerate}
+\def\labelenumi{(\arabic{enumi})}
+\setcounter{enumi}{7}
+\tightlist
+\item
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{pdfgrep}  \AttributeTok{{-}P} \StringTok{\textquotesingle{}(?\textless{}![Zz]u )Ende(?! des [a{-}z])\textquotesingle{}} 
+\ExtensionTok{{-}{-}page{-}number=label} \AttributeTok{{-}H}  
+\ExtensionTok{{-}{-}color=always} \PreprocessorTok{*}\NormalTok{.pdf }\KeywordTok{|} \FunctionTok{grep} \AttributeTok{{-}v} \AttributeTok{{-}e} \StringTok{\textquotesingle{}[Zz]u\textquotesingle{}}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{enumerate}
+\def\labelenumi{(\arabic{enumi})}
+\setcounter{enumi}{8}
+\tightlist
+\item
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{pdfgrep} \AttributeTok{{-}e} \StringTok{\textquotesingle{}[Ss]ch[aä]tz\textquotesingle{}}\NormalTok{ HdE}\DataTypeTok{\textbackslash{} }\NormalTok{German.pdf }
+\ExtensionTok{{-}H} \AttributeTok{{-}{-}page{-}number}\OperatorTok{=}\NormalTok{label }\OperatorTok{\textgreater{}}\NormalTok{ results.txt}
+\end{Highlighting}
+\end{Shaded}
+
+\clearpage
+
+\begin{enumerate}
+\def\labelenumi{(\arabic{enumi})}
+\setcounter{enumi}{9}
+\tightlist
+\item
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+ \ExtensionTok{pdfgrep} \PreprocessorTok{*}\NormalTok{.pdf }\AttributeTok{{-}e} \StringTok{\textquotesingle{}G[aei]hen(n)?a\textquotesingle{}}
+  \ExtensionTok{{-}{-}page{-}number=label}  \KeywordTok{|} \FunctionTok{awk} \AttributeTok{{-}f}\NormalTok{ grep\_to\_csv.awk }\OperatorTok{\textgreater{}}\NormalTok{ gehenna.csv}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{enumerate}
+\def\labelenumi{(\arabic{enumi})}
+\setcounter{enumi}{10}
+\tightlist
+\item
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ControlFlowTok{BEGIN} \OperatorTok{\{} \BuiltInTok{FS} \OperatorTok{=} \StringTok{":"}\OperatorTok{;} \KeywordTok{print} \StringTok{"text"}\OperatorTok{,} \StringTok{","}\OperatorTok{,} \StringTok{"citation"} \OperatorTok{\}}
+\OperatorTok{\{} 
+\NormalTok{    cutoff }\OperatorTok{=} \FunctionTok{index}\OperatorTok{(}\DataTypeTok{$1}\OperatorTok{,} \StringTok{" "}\OperatorTok{);}
+    \CommentTok{\# print "cutoff index is " cutoff \# for debugging purposes}
+    \KeywordTok{print} \FunctionTok{substr}\OperatorTok{(}\DataTypeTok{$1}\OperatorTok{,} \DecValTok{1}\OperatorTok{,}\NormalTok{ cutoff}\OperatorTok{)} \StringTok{","}\OperatorTok{,} \DataTypeTok{$2} 
+\OperatorTok{\}} 
+\end{Highlighting}
+\end{Shaded}
+
+
+\end{document}

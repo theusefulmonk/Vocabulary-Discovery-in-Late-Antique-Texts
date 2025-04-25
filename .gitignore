@@ -8,5 +8,6 @@
 *.pygstyle
 /build/*
 !Vocabulary-Discovery-in-Late-Antique-Texts.pdf
+!examples-handout.pdf
 /sources
 repaginate.txt
