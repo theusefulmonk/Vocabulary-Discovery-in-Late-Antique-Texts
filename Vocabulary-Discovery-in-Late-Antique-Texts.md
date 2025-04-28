@@ -125,7 +125,9 @@ I take for granted that you already have one or more ocr'ed pdf files that meet 
 
 ## Phase 1: Repaginate
 
-We will use the accompanying file `repaginate.tex`{.markdown}. Scanned pdfs that need repagination are placed in a dedicated `sources` directory. We then make any necessary changes to the `repaginate.tex`{.markdown} file and typeset it.
+\LaTeX{} is "a system for typesetting documents."[@lamport1994, p. 2] It comprises a typesetting language and several typesetting engines for producing high quality pdfs from a source file. It works a little like HTML. Just as one marks up plain text to generate a webpage, with \LaTeX{} one marks up plain text to generate a pdf. \LaTeX{} is extensible through packages, which typically provide easy ways to to perform specific complex typesetting tasks. One such package^[[pdfpages](https://texdoc.org/serve/pdfpages.pdf/0)] can combine source pdfs into a new document. Another^[[hyperref](https://texdoc.org/serve/hyperref/0)] can edit internal document links and navigable structure, including page labels. By putting these two packages together, it is possible to create a source file that will assemble a final pdf from the sections of an existing pdf, repaginating with correct page labels.
+
+We will use the accompanying file `repaginate.tex`{.markdown}. Scanned pdfs that need repagination are placed in a dedicated `sources` directory. We then make any necessary changes to the instructions in the `repaginate.tex`{.markdown} file and typeset it.
 
 In our example, the original file is Beck's translation of the *Hymns on the Nativity* with the filename `hdn-ocr-optimized.pdf`{.markdown}. We first examine the scan to determine the absolute page numbers of each section requiring distinct pagination:
 

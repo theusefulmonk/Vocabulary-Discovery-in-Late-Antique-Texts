@@ -401,10 +401,26 @@ that meet the following requirements:
 
 \subsection{Phase 1: Repaginate}\label{phase-1-repaginate}
 
+\LaTeX{} is ``a system for typesetting documents.''\footnote{Leslie
+  Lamport, \emph{LATEX: A Document Preparation System : User's Guide and
+  Reference Manual} (Boston: Addison-Wesley Professional, 1994), 2.} It
+comprises a typesetting language and several typesetting engines for
+producing high quality pdfs from a source file. It works a little like
+HTML. Just as one marks up plain text to generate a webpage, with
+\LaTeX{} one marks up plain text to generate a pdf. \LaTeX{} is
+extensible through packages, which typically provide easy ways to to
+perform specific complex typesetting tasks. One such package\footnote{\href{https://texdoc.org/serve/pdfpages.pdf/0}{pdfpages}}
+can combine source pdfs into a new document. Another\footnote{\href{https://texdoc.org/serve/hyperref/0}{hyperref}}
+can edit internal document links and navigable structure, including page
+labels. By putting these two packages together, it is possible to create
+a source file that will assemble a final pdf from the sections of an
+existing pdf, repaginating with correct page labels.
+
 We will use the accompanying file \VERB|\NormalTok{repaginate.tex}|.
 Scanned pdfs that need repagination are placed in a dedicated
 \texttt{sources} directory. We then make any necessary changes to the
-\VERB|\NormalTok{repaginate.tex}| file and typeset it.
+instructions in the \VERB|\NormalTok{repaginate.tex}| file and typeset
+it.
 
 In our example, the original file is Beck's translation of the
 \emph{Hymns on the Nativity} with the filename
@@ -785,6 +801,10 @@ California: {``O'Reilly Media, Inc.''} 2012.
 \bibitem[\citeproctext]{ref-kernighan1984}
 Kernighan, Brian W., and Rob Pike. \emph{The UNIX Programming
 Environment}. Englewood Cliffs, New Jersey: Prentice-Hall, 1984.
+
+\bibitem[\citeproctext]{ref-lamport1994}
+Lamport, Leslie. \emph{LATEX: A Document Preparation System : User's
+Guide and Reference Manual}. Boston: Addison-Wesley Professional, 1994.
 
 \bibitem[\citeproctext]{ref-pdfassociation2025}
 PDF Association. {``Glossary of PDF Terms.''}
