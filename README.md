@@ -115,6 +115,21 @@ I have no financial interest in recommending the following proprietary software:
    is less accurate than the Abbyy engine for this application. The
    best free alternatives are the command line tools [qpdf](https://github.com/qpdf/qpdf) and [mutool](https://www.mankier.com/1/mutool).
 
+# Additional Workflow Suggestions
+
+This workflow benefits greatly from having a dedicated location on
+your filesystem. I recommend putting the pdfs to be searched in one 
+location, along with copies or symlinks to the awk scripts. Two other
+small tweaks make can supercharge this approach
+
+1. Use Tmux to create a persistent session to which you can easily
+   switch whenever you have an idea for running a search. This will
+   drop you into your dedicated search directory with only a few
+   keystrokes.
+2. Make use of your shell's history features to recall old
+   command lines quickly. It is usually easier to modify an old command
+   line than to create a complicated one from scratch.
+
 # Final Considerations
 
 Pdfs suitable for this workflow typically take up significant amounts
